@@ -1,20 +1,17 @@
-import DashboardHeader from "@/components/Dashboard/DashboardHeader";
+import DashboardHeader from "@/components/Dashboard/DashHeader";
 import DashboardSidebar from "@/components/Dashboard/SideBar";
 import TopHeader from "@/components/Dashboard/DashboardTab/TopHeader";
 // import DashboardMetrics from "@/components/Dashboard/DashboardTab/MetricCards"
 import { LeftRightCards } from "@/components/Dashboard/DashboardTab/AllsimpleCom";
 import DashboardMetrics from "@/components/Dashboard/DashboardTab/MetricCards";
 import {CompaniesBarChart,  RevenueChart, TopPlansPieChart} from '@/components/Dashboard/DashboardTab/charts'
+import DashLayout from "@/components/Dashboard/DashLayout";
 
 
 
 function DashboardPage() {
   return (
-    <div className="w-full flex flex-wrap justify-between">
-      <DashboardSidebar />
-      {/* Right Bar */}
-      <div className="w-[82%] px-2">
-        <DashboardHeader />
+    <DashLayout>
         <TopHeader />
         <DashboardMetrics />
         <LeftRightCards />
@@ -25,8 +22,8 @@ function DashboardPage() {
           <TopPlansPieChart />
           
         </div>
-      </div>
-    </div>
+      </DashLayout>
+  
   );
 }
 

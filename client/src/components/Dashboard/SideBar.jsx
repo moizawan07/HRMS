@@ -17,6 +17,7 @@ import {
   LogOut,
   PanelLeftClose, // Icon for collapsing
   PanelLeftOpen,  // Icon for expanding
+  BadgePlus
 } from "lucide-react";
 import { Link, NavLink } from 'react-router-dom';
 
@@ -32,6 +33,7 @@ const navItems = [
   { name: "Finance", icon: DollarSign, href: "/finance" },
   { name: "HR Documents", icon: FileText, href: "/hr-documents" },
   { name: "Profile", icon: UserCog, href: "/profile" },
+  { name: "invite", icon: BadgePlus, href: "/invite" },
 ];
 
 const logoutItem = { name: "Logout", icon: LogOut, href: "/logout", isLogout: true };

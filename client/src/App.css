@@ -45,3 +45,8 @@
   background: linear-gradient(to left, #d6e2f7, #e2d3f5);
   border-radius: 20px 350px 70px 250px;
 }
+
+.bgcolor1{
+  background: linear-gradient(to bottom, #4f4ff2, #dccbf3);
+  border-radius:  250px 30px 350px 90px ;
+}

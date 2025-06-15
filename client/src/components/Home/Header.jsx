@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 // Import icons from Lucide React
 import { BellIcon, MailIcon, UserIcon } from "lucide-react"; 
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
@@ -49,11 +50,13 @@ export default function Header() {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" aria-label="Login">
+                <Link to='/login'>
                 <UserIcon className="h-6 w-6 text-gray-600" />
+                </Link>
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Login</p>
+             <p>Login</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

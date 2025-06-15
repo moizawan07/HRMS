@@ -1,20 +1,12 @@
-import DashboardHeader from "@/components/Dashboard/DashboardHeader";
-import DashboardSidebar from "@/components/Dashboard/SideBar";
-
-
+import DashLayout from "@/components/Dashboard/DashLayout"
 
 
 function DAttendence() {
   return (
-    <div className="w-full flex flex-wrap justify-between">
-      <DashboardSidebar />
-      {/* Right Bar */}
-      <div className="w-[82%] px-2">
-        <DashboardHeader />
-         <h1>Attendence page</h1>
-      </div>
-    </div>
-  );
+    <DashLayout>
+       <h1>Attendence Page</h1>
+    </DashLayout>
+  )
 }
 
-export default DAttendence;
+export default DAttendence

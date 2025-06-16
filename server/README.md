@@ -1,4 +1,4 @@
-          BACKEND FOLDER STRUCTURING
+          #BACKEND FOLDER STRUCTURING
 │
 ├── /controllers
 │   ├── auth.controller.js         // Login, Signup, Reset, Verify Invite

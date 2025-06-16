@@ -1,5 +1,5 @@
 // components/LoginPage.jsx (or pages/auth/login.jsx)
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form"; // Only react-hook-form
 import { Eye, EyeOff, Mail, Lock } from "lucide-react"; // Icons for password toggle, email, and lock
 
@@ -17,9 +17,12 @@ import {
 } from "@/components/ui/form";
 import { Link } from "react-router-dom";
 import AuthLayout from "@/components/auth/AuthLayout";
+import { UserContext } from "@/context/userContext";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [loginMsg, setLoginMsg] = useState(false);
+  let {userConData , setUserConData} = useContext(UserContext)
 
   // Initialize useForm without a resolver
   const form = useForm({
@@ -33,20 +36,46 @@ export default function LoginPage() {
   });
 
   // Handle form submission
-  function onSubmit(values) {
+  async function onSubmit(values) {
     console.log("Login form submitted:", values);
-    // In a real app, you'd send these credentials to your backend API
-    alert(
-      `Attempting to log in with Email: ${values.email}, Password: ${values.password}`
-    );
-  }
+    try {
+       let res = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
+        method : 'POST',
+        headers : {
+          'Content-Type' : 'Application/json'
+        },
+        body : JSON.stringify(values),
+        credentials : 'include'
+       })
 
+       let resData = await res.json()
+        
+       setLoginMsg(resData.message)
+       if(res.status != 200) throw new Error(resData)
+        alert('sucessfullylogin')
+
+
+        setUserConData(resData.data)
+    } 
+    catch (error) {
+      console.log(error);
+    }
+  }
+if(loginMsg){
+  console.log(loginMsg.includes('Invalid Credentials'));
+
+}
+  
   return (
     <AuthLayout>
       {/* Righ Side: Login Form */}
       <div className="w-full lg:w-1/2 p-8 flex flex-col justify-center">
         <div className="max-w-md mx-auto w-full">
-          <h1 className="text-3xl font-bold mb-2 text-gray-800">
+         {loginMsg && <h1 className={`h-10 text-center pt-2 rounded 
+          bg-${loginMsg.includes('Invalid Credentials') ? 'red-200' : 'green-200'}`}>
+            {loginMsg}
+            </h1>}
+          <h1 className="text-3xl font-bold mb-2 text-gray-800 ">
             Welcome Back
           </h1>
           <p className="text-sm text-gray-600 mb-6">

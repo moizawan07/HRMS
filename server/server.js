@@ -17,13 +17,18 @@ app.use(cookieParser());
 // imports
 let dbConnect = require("./config/db");
 let authenRoutes = require("./routes/authenRoutes");
+const unAuthenRoutes = require("./routes/unAuthenRoutes");
 
 // Connect Database
 dbConnect();
 
 app.use("/uploads", express.static("./public/uploads"));
 
+// Authenticated pages routes like dashboard etc.
 app.use('/', authenRoutes)
+
+// UnAuthenticated Pages routes like Login Signup etc.
+app.use('/', unAuthenRoutes)
 
 
 let PORT = process.env.PORT || 5000;

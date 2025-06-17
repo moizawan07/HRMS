@@ -37,7 +37,6 @@
  background: linear-gradient(to left, #cfdef8, #e8daf9);
 }
 .color{
- /* background: linear-gradient(to top, #ccdbf6, #e2d6f0); */
  background: linear-gradient(to top, #fcfdfd, #d7c2f0);
  box-shadow:  0px 0px 4px #bd98eb;
 }
@@ -49,4 +48,10 @@
 .bgcolor1{
   background: linear-gradient(to bottom, #4f4ff2, #dccbf3);
   border-radius:  250px 30px 350px 90px ;
+}
+
+.bgcolor3{
+   /* background: linear-gradient(to top, #c4d9fd, #c7a2f7); */
+   background: gray;
+  border-radius: 0px  710px 550px;
 }

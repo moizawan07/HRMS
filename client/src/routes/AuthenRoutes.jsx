@@ -1,7 +1,7 @@
 
 
 import DashboardPage from "@/pages/Authen/Dashboard";
-import DAttendence from "@/pages/Authen/DAttendence";
+import DAttendence from "@/pages/Authen/DAttendence/DAttendence";
 import DEmployes from "@/pages/Authen/DEmployes";
 import DInvite from "@/pages/Authen/DInvite";
 import DLeaves from "@/pages/Authen/DLeaves";

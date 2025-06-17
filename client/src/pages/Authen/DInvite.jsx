@@ -528,9 +528,9 @@ function AdminOrHr() {
 
   return (
     <DashLayout>
-      <div className="flex flex-col min-h-screen bg-gray-50">
+      <div className="flex flex-col px-10 py-5  min-h-screen bg-gray-50">
         {/* Top Blue Cover Section - From image_f45525.png layout */}
-        <div className="relative w-full h-[180px] bg-blue-700 flex justify-end items-end p-4 z-0">
+        <div className="relative w-full h-[180px] bg-blue-700 rounded flex justify-end items-end p-4 z-0">
           <Button
             variant="outline"
             className="bg-white text-blue-700 hover:bg-blue-50"
@@ -545,7 +545,7 @@ function AdminOrHr() {
           {/* Profile Image (fixed position relative to this container) - From image_f45525.png layout */}
           <div className="absolute -top-12 left-6">
             <img
-              src="/avatars/default-profile.jpg" // Placeholder profile image
+              src="https://img.freepik.com/free-vector/flat-customer-service-week-illustration_23-2149644201.jpg?ga=GA1.1.244699205.1742808432&semt=ais_hybrid&w=740" // Placeholder profile image
               alt="Profile"
               className="w-24 h-24 rounded-full border-4 border-white object-cover shadow-md"
             />

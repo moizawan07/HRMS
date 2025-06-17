@@ -70,10 +70,10 @@ if(loginMsg){
   return (
     <AuthLayout>
       {/* Righ Side: Login Form */}
-      <div className="w-full lg:w-1/2 p-8 flex flex-col justify-center">
+      <div className="w-full lg:w-1/2 p-8 flex flex-col justify-center relative">
         <div className="max-w-md mx-auto w-full">
-         {loginMsg && <h1 className={`h-10 text-center pt-2 rounded 
-          bg-${loginMsg.includes('Invalid Credentials') ? 'red-200' : 'green-200'}`}>
+         {loginMsg && <h1 className={`max-w-md mx-auto w-full h-10 text-center pt-2 rounded absolute top-3
+          ${loginMsg.includes('Sucessfully') ? 'bg-green-200' : 'bg-red-200'} text-gray-800 text-[15px]`}>
             {loginMsg}
             </h1>}
           <h1 className="text-3xl font-bold mb-2 text-gray-800 ">

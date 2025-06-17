@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -20,6 +20,7 @@ import {
   BadgePlus
 } from "lucide-react";
 import { Link, NavLink } from 'react-router-dom';
+import { UserContext } from '@/context/userContext';
 
 // --- Navigation Data ---
 // Define your sidebar links with their icons
@@ -42,6 +43,9 @@ const logoutItem = { name: "Logout", icon: LogOut, href: "/logout", isLogout: tr
 export default function DashboardSidebar() {
   // State to manage sidebar expansion
   // Starts expanded on larger screens, collapsed on smaller screens (controlled by Tailwind breakpoints)
+  let {userConData, setUserConData}= useContext(UserContext)
+   let removeInvite = userConData.user.role === 'employee'
+       removeInvite && navItems.pop()
   const [isExpanded, setIsExpanded] = useState(true);
 
   const toggleSidebar = () => {

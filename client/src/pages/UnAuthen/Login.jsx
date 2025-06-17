@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { UserContext } from "@/context/userContext";
 
@@ -23,6 +23,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loginMsg, setLoginMsg] = useState(false);
   let {userConData , setUserConData} = useContext(UserContext)
+  let navigate = useNavigate(false)
 
   // Initialize useForm without a resolver
   const form = useForm({
@@ -53,9 +54,9 @@ export default function LoginPage() {
        setLoginMsg(resData.message)
        if(res.status != 200) throw new Error(resData)
         alert('sucessfullylogin')
-
-
         setUserConData(resData.data)
+
+        navigate('/dashboard')
     } 
     catch (error) {
       console.log(error);

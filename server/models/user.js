@@ -23,6 +23,8 @@ const schema = mongoose.Schema(
       type: String,
       enum: ["owner", "admin", "hr", "employee"],
     },
+    salary : String,
+    invitedBy : String
   },
   {
     timestamps: true,

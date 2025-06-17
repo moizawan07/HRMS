@@ -27,6 +27,8 @@ const companyInvite = async (req, res) => {
       companyField,
     } = req.body;
 
+    let emailReserverd = await  userModel.findOne({email})
+       if(emailReserverd) return res.status(400).json({ message: "This Email is Reserved"});
     // 1. Upload logo
     const result = await uploadToCloudinary(req.file.buffer);
 
@@ -54,13 +56,14 @@ const companyInvite = async (req, res) => {
 
     const htmlContent = generateInviteEmail({
       companyName,
+      role,
       companyLogo: result.secure_url,
       link: `${process.env.Invite_Link}/${addin._id}`,
     });
 
     await sendMail({
       to: 'ahmedmoizawan007@gmail.com', // email
-      subject: `You're Invited to Join ${companyName}`,
+      subject: `Youre Invited to Join as an ${role} In ${companyName}`,
       html: htmlContent,
     });
 
@@ -71,41 +74,53 @@ const companyInvite = async (req, res) => {
 };
 
 
+// 2 Invite Employee OR Hr => By Company Admin
+const EmployeeOrHrInvite = async (req, res) => {
+  let {firstName, lastName, email, role, phoneNumber, salary} = req.body;
+  // console.log('req.user', req.user);
 
-// 2 Invite User OR Hr => By Company Admin
-const userOrHrInvite = async (req, res) => {
-  let {} = req.body;
-
+   let emailReserverd = await  userModel.findOne({email})
+       if(emailReserverd) return res.status(400).json({ message: "This Email is Reserved"});
+  
+  try {
   let addin = await inviteModel.create({
     firstName,
     lastName,
     email,
     role,
     phoneNumber,
-    companyName,
-    companyLogo,
-    invitedBy,
+    companyName : req.user.companyName,
+    companyId : req.user.campanyId,
+    companyLogo : req.user.companyLogo,
+    invitedBy : req.user.userRole,
+    salary,
   });
 
-  let token = jwt.sign(
-    { companyInviteId: addin._id },
-    process.env.JWT_INVITE_SECRET,
-    { expiresIn: "2d" }
-  );
+  // let token = jwt.sign(
+  //   { companyInviteId: addin._id },
+  //   process.env.JWT_INVITE_SECRET,
+  //   { expiresIn: "2d" }
+  // );
 
   const htmlContent = generateInviteEmail({
-    companyName,
-    companyLogo,
-    link: `http://localhost:5173/verify/${token}`,
+     companyName: req.user.companyName,
+     role,
+     companyLogo : req.user.companyLogo,
+    link: `http://localhost:5173/verify/${addin._id}`,
   });
 
   await sendMail({
-    to: email,
-    subject: `You're Invited to Join ${companyName}`,
+    to: "ahmedmoizawan007@gmail.com", // 'Replace with the user email'
+    subject: `You're Invited to Join as an ${role} In  ${req.user.companyName}`,
     html: htmlContent,
   });
 
   res.status(200).json({ message: "Invite sent successfully" });
+} 
+  catch (error) {
+    console.log('errror==>',error);
+    res.status(500).json({ message: "Server Error" });
+  }
 };
 
 // 3: All Invite verify Function like company means admin hr and employee
@@ -138,9 +153,11 @@ const inviteVerify = async (req, res) => {
 // 4: Invite Accept 
 const inviteAccept =  async (req, res) => {
    try {
-    let{ firstName,lastName,email,password,gender,address, id,role, phoneNumber,dateOfBirth,   // user schems
-         companyName, companyLogo, companySize, headquarters, companyField,      // company schema
+    let{ firstName,lastName,email,password,gender,address, _id,role, phoneNumber,dateOfBirth, invitedBy, salary,   // user schems
+         companyName, companyId, companyLogo, companySize, headquarters, companyField,      // company schema
     } = req.body
+
+    console.log('inviteaccept api body==>', req.body);
    let hashPass = await bcryptJs.hash(password, 10)
    
     if(companySize){
@@ -149,20 +166,22 @@ const inviteAccept =  async (req, res) => {
       })
       let userAdd =  await userModel.create({
         firstName,lastName,email,password:hashPass, gender,address, campanyId: companyAdd._id ,role, phoneNumber,dateOfBirth,
+        invitedBy,
       })
     }else{
       let userAdd = await userModel.create({
-        firstName,lastName,email,password,gender,address, campanyId : id,  role, phoneNumber,dateOfBirth
+        firstName,lastName,email,password : hashPass, gender, address, campanyId : companyId, invitedBy,  role, phoneNumber,dateOfBirth, salary
       })
     }
+    let inviteDocumentDelet = await inviteModel.findByIdAndDelete(_id);
     res.status(200).json({message : 'sucess fullly add'})
   }
    catch (error) {
-    console.log('error==>', error.message);
+    console.log('error==>', error);
     
     res.status(500).json({message : 'server error'})
    }
 }  
 
 // All Exports
-module.exports = { companyInvite, userOrHrInvite, inviteVerify, inviteAccept };
+module.exports = { companyInvite, EmployeeOrHrInvite, inviteVerify, inviteAccept };

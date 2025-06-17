@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const jwtVerify = async (req, res, next) => {
-  const token = req.cookies.token;
+  const {token} = req.cookies;
   console.log("token ==>", token);
 
   if (!token) {
@@ -9,7 +9,7 @@ const jwtVerify = async (req, res, next) => {
   }
 
   try {
-    const decodeToken = jwt.verify(token, process.env.JWT_AUTH_SECRET);
+    const decodeToken =  jwt.verify(token, process.env.JWT_AUTH_SCRET);
     req.user = decodeToken;
     next();
   } catch (err) {

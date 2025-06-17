@@ -15,10 +15,12 @@ const schema = mongoose.Schema(
     companySize: String,
     headquarters: String,
     companyField: String,
+     companyId : String,
     invitedBy: {
       type: String,
       enum: ["owner", "admin", "hr", "employee"],
     },
+    salary : String
   },
   {
     timestamps: true,

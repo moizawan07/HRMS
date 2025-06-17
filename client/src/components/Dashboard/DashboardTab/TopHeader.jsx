@@ -1,6 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { UserContext } from "@/context/userContext";
+import { useContext } from "react";
 
 function TopHeader() {
+  let {userConData} = useContext(UserContext)
+  let {firstName, lastName, role} = userConData.user
   return (
     <div className="bg-[#a867f7] mt-5 relative w-[96%] mx-auto h-35 content-center rounded-xl text-white">
       <img
@@ -10,8 +14,8 @@ function TopHeader() {
       />
       <div className="flex justify-between  items-center px-15">
         <div>
-          <h1 className="md:text-2xl font-bold">Welcome Back, Adrian</h1>
-          <p className="md:text-sm">14 New Companies Subscribed Today !!!</p>
+          <h1 className="md:text-2xl font-bold">Welcome Back  <span className="font-semibold capitalize">{firstName +  " " + lastName}!  </span> </h1>
+          <p className="md:text-sm">Your Role <span className="capitalize"> {role}</span></p>
         </div>
         <img
           src="https://smarthr.dreamstechnologies.com/laravel/template/public/build/img/bg/welcome-bg-03.svg"

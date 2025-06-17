@@ -8,22 +8,20 @@ const login = async (req, res) => {
 
   try {
     let user = await userModel.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid Credentials" });
+    if (!user) return res.status(400).json({ message: "Invalid Credentials1" });
     let passMatch = await bcryptJs.compare(password, user.password);
-    if (!passMatch)
-      return res.status(400).json({ message: "Invalid Credentials" });
-
+    if (!passMatch) return res.status(400).json({ message: "Invalid Credentials2" });
+    let simpleUser = user.toObject();
     // If Owner To sirf Use Apna Data reqturn bad am apis hit kr ka woh sb companies ka data nikal lai ga
     if (user.role === "owner")
       return res
         .status(200)
-        .json({ message: "Sucessfully Login1", data: user });
+        .json({ message: "Sucessfully Login1", data: { user: { ...simpleUser }}});
 
     let company = await companyModel.findById(user.campanyId);
     if (!company)
       return res.status(400).json({ message: "No Company Matched" });
 
-    let simpleUser = user.toObject();
     let simpleCompany = company.toObject();
 
     let payload = {
@@ -31,6 +29,9 @@ const login = async (req, res) => {
       userName: user.firstName,
       userEmail: user.email,
       userRole: user.role,
+      campanyId: company._id,
+      companyName: company.companyName,
+      companyLogo: company.companyLogo,
     };
 
     let token = jwt.sign(payload, process.env.JWT_AUTH_SCRET);

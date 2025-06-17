@@ -55,7 +55,8 @@ function InviteVerify() {
       headers : {
         'Content-Type' : 'Application/json'
       },
-      body : JSON.stringify(finalData)
+      body : JSON.stringify(finalData),
+      credentials : 'include'
      })
     let resData = await res.json()
    } catch (error) {
@@ -77,8 +78,9 @@ function InviteVerify() {
                   className="h-16 mx-auto mb-2 rounded-full"
                 />
                 <h2 className="text-xl font-semibold">
-                  {inviteData.companyName}
+                 <span className="text-[18px]">Company:</span> <span className="uppercase"> {inviteData.companyName} </span>
                 </h2>
+                <p className="text-xs mt-3 text-gray-700">Your Role In The Company <span className="uppercase font-semibold text-blue-500">{inviteData.role}</span> </p>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

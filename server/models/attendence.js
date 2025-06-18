@@ -5,6 +5,9 @@ const schema = mongoose.schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
+  email: {
+    type : String
+  },
   status: {
     type: String,
     enum: ["Present", "Absent", "Leave"],
@@ -14,16 +17,14 @@ const schema = mongoose.schema({
     default: Date.now(),
   },
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    type: String,
   }, // JWT se niklega, kis ne daali
   approvalStatus: {
     type: String,
     enum: ["Pending", "Approved", "Reject"],
   }, // optional: pending / approved / rejected
   approvedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    type: String,
   },
   //   checkIn: "09:00",
   //   checkOut: "17:00",

@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import AddAttendanceModal from "./AddAttenceModal";
 import { UserContext } from "@/context/userContext";
 import AttendanceTable from "./AttendenceTable";
+import RequestAttend from "./RequestAttend";
 
 function DAttendence() {
   let [requestAttenCom, setRequestAttenCom] = useState(false); // Requeest  Attendence Componenent show state by default no
@@ -51,12 +52,13 @@ function DAttendence() {
         <div className="flex justify-between mt-10">
           <h1>Check Attendence</h1>
           <AddAttendanceModal
+            email={userConData.user.role != 'admin' ? userConData.user.email : ''}
             role={userConData.user.role}
           />
         </div>
 
         {requestAttenCom ? (
-          <h1 className="mt-5">10+ Requets Attendence</h1>
+          <RequestAttend />
         ) : (
          <AttendanceTable />
         )}

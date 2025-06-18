@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useState } from "react";
 
-function AddAttendanceModal({ role}) {
+function AddAttendanceModal({ role, email = ''}) {
     let [open, setOpen] = useState(false)
 
   const {
@@ -27,6 +27,7 @@ function AddAttendanceModal({ role}) {
     }
     
   };
+   console.log("email==>", email)
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -38,17 +39,19 @@ function AddAttendanceModal({ role}) {
           <DialogTitle>Add Attendance</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {(role === "admin" || role === "hr") && (
+          {/* {(role === "admin" || role === "hr") && ( */}
             <div>
-              <Label className="mb-2">Email of Employee</Label>
+              <Label className="mb-2">Email of Employee {role != 'employee' && '/ Hr'}</Label>
               <Input
                 type="email"
-                placeholder="Enter employee email"
+                placeholder={`Enter employee ${role != 'employee' ? '/ Hr Email' : 'Email'}`}
+                defaultValue={email}
+                disabled={role === 'employee'}
                 {...register("email", { required: "Email is required" })}
               />
               {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
             </div>
-          )}
+          {/* )} */}
 
           <div>
             <Label>Status</Label>

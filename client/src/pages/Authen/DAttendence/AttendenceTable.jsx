@@ -8,6 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+
+
+const statusColors = {
+  Present: "bg-green-200 text-green-900",
+  Absent: "bg-yellow-200 text-yellow-900",
+  Leave: "bg-red-100 text-red-700",
+};
+
 
 const AttendanceTable = () => {
   const [attendanceData, setAttendanceData] = useState([
@@ -71,8 +80,10 @@ const AttendanceTable = () => {
           {attendanceData.map((entry) => (
             <TableRow key={entry.userId}>
               <TableCell>{entry.name}</TableCell>
-              <TableCell className={getStatusColor(entry.status)}>
+              <TableCell>
+                <Badge  className={statusColors[entry.status]}>
                 {entry.status}
+                </Badge>
               </TableCell>
               <TableCell>{entry.date}</TableCell>
               <TableCell>{entry.createdBy}</TableCell>

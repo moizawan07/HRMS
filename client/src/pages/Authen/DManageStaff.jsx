@@ -1,12 +1,12 @@
 import DashLayout from "@/components/Dashboard/DashLayout"
 
 
-function DEmployes() {
+function DManageStaff() {
   return (
     <DashLayout>
-       <h1>Employess</h1>
+       <h1>manageStaff</h1>
     </DashLayout>
   )
 }
 
-export default DEmployes
+export default DManageStaff

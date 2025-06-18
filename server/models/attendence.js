@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 
-const schema = mongoose.schema({
+const schema = mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
+  companyId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "companies",
+},
   email: {
     type : String
   },
@@ -21,7 +25,7 @@ const schema = mongoose.schema({
   }, // JWT se niklega, kis ne daali
   approvalStatus: {
     type: String,
-    enum: ["Pending", "Approved", "Reject"],
+    enum: ["Pending", "Approved", "Declined"],
   }, // optional: pending / approved / rejected
   approvedBy: {
     type: String,
@@ -31,3 +35,5 @@ const schema = mongoose.schema({
 });
 
 const attendenceModel = mongoose.model("attendence", schema);
+
+module.exports = attendenceModel;

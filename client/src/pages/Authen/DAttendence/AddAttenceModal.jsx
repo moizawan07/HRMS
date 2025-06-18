@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useState } from "react";
 
+
 function AddAttendanceModal({ role, email = ''}) {
     let [open, setOpen] = useState(false)
 
@@ -19,15 +20,34 @@ function AddAttendanceModal({ role, email = ''}) {
 
   const currentDate = new Date().toISOString().split("T")[0];
 
-  const onSubmit = (data) => {
-    if (role === "admin" || role === "hr") {
-      console.log("Admin/HR Submitted Attendance:", data);
-    } else {
-      console.log("Employee Submitted Attendance:", data);
-    }
+  const onSubmit = async (data) => {
+   try {
+     let res = await fetch(`${import.meta.env.VITE_SERVER_URL}/attendenceAdd`, {
+        method : 'POST',
+        headers : {
+          'Content-Type' : 'Application/json'
+        },
+        body : JSON.stringify(data),
+        credentials : 'include'
+     })
+     let resData = await res.json()
+     
+     if(role != 'employee') {
+      setValue('email', '')
+     }
+      setValue('status', '')
+     if(res.status !== 200) throw new Error(resData.message);    
+
+   } 
+   catch (error) {
+    alert(error)
+  }
+   finally{
+    setOpen(false)
+   }
+   }
+   
     
-  };
-   console.log("email==>", email)
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

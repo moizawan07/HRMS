@@ -1,6 +1,6 @@
 // src/pages/Dashboard/RequestAttendance.jsx
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -12,54 +12,61 @@ const statusColors = {
 };
 
 const RequestAttendance = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      name: "Ahmed Khan",
-      date: "2025-06-15",
-      status: "Present",
-      approvalStatus: "Pending",
-    },
-    {
-      id: 2,
-      name: "Sara Ali",
-      date: "2025-06-14",
-      status: "Absent",
-      approvalStatus: "Approved",
-    },
-    {
-      id: 3,
-      name: "Zainab Mirza",
-      date: "2025-06-13",
-      status: "Leave",
-      approvalStatus: "Declined",
-    },
-  ]);
+  const [data, setData] = useState([]);
 
-  const handleStatusChange = (id, newStatus) => {
+  const handleStatusChange = async(id, newStatus) => {
     const updatedData = data.map((item) =>
-      item.id === id ? { ...item, approvalStatus: newStatus } : item
+      item._id === id ? { ...item, approvalStatus: newStatus } : item
     );
     setData(updatedData);
+    try {
+     let res = await fetch(`${import.meta.env.VITE_SERVER_URL}/attendenceAppproval`, {
+        method : 'POST',
+        headers : {
+          'Content-Type' : 'Application/json'
+        },
+        body : JSON.stringify({attendenceId : id,approvalMsg : newStatus}),
+        credentials : 'include'
+     })
+     let resData = await res.json()
+   } 
+   catch (error) {
+    alert(error.message)
+  }
   };
 
+  useEffect(() =>{
+    fetch(`${import.meta.env.VITE_SERVER_URL}/attendenceRequestGet`, {
+      method : 'GET',
+      credentials : 'include'
+    }).then(res => res.json())
+    .then(data => setData(data.data))
+    .catch(err => console.log(err))
+
+
+  }, [])
+
+  
   return (
     <div className="p-4">
+      {data.length > 0 ? (
+        <>
       <h2 className="text-xl font-bold mb-4">Attendance Requests</h2>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Date</TableHead>
+            <TableHead>Email</TableHead>
             <TableHead>Status</TableHead>
+            <TableHead>Date</TableHead>
             <TableHead>Approval</TableHead>
+            <TableHead>Created</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.map((att) => (
-            <TableRow key={att.id}>
-              <TableCell>{att.name}</TableCell>
-              <TableCell>{att.date}</TableCell>
+             att.approvalStatus === 'Pending' &&(
+            <TableRow key={att._id}>
+              <TableCell>{att.email}</TableCell>
               <TableCell>
                 <Badge
                   className={
@@ -73,10 +80,11 @@ const RequestAttendance = () => {
                   {att.status}
                 </Badge>
               </TableCell>
+              <TableCell>{new Date(att.date).toLocaleDateString()}</TableCell>
               <TableCell>
                 <Select
                   value={att.approvalStatus}
-                  onValueChange={(value) => handleStatusChange(att.id, value)}
+                  onValueChange={(value) => handleStatusChange(att._id, value)}
                 >
                   <SelectTrigger className={`w-[120px] bg-gray-50 ${statusColors[att.approvalStatus]}`}>
                     <SelectValue placeholder="Select status" />
@@ -88,10 +96,12 @@ const RequestAttendance = () => {
                   </SelectContent>
                 </Select>
               </TableCell>
+               <TableCell>{att.createdBy}</TableCell>
             </TableRow>
-          ))}
+          )))}
         </TableBody>
       </Table>
+       </>): <h1> No Attendence Request</h1>}
     </div>
   );
 };

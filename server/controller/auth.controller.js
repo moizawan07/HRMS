@@ -13,10 +13,26 @@ const login = async (req, res) => {
     if (!passMatch) return res.status(400).json({ message: "Invalid Credentials2" });
     let simpleUser = user.toObject();
     // If Owner To sirf Use Apna Data reqturn bad am apis hit kr ka woh sb companies ka data nikal lai ga
-    if (user.role === "owner")
+    if (user.role === "owner") {
+     let payload = {
+      userId: user._id,
+      userName: user.firstName,
+      userEmail: user.email,
+      userRole: user.role,
+    };
+
+    let token = jwt.sign(payload, process.env.JWT_AUTH_SCRET);
+
+    // Cookies Set
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "Lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 din
+    });
       return res
-        .status(200)
-        .json({ message: "Sucessfully Login1", data: { user: { ...simpleUser }}});
+      .status(200)
+      .json({ message: "Sucessfully Login1", data: { user: { ...simpleUser }}});
+    }
 
     let company = await companyModel.findById(user.campanyId);
     if (!company)

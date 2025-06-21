@@ -24,7 +24,8 @@ const schema = mongoose.Schema(
       enum: ["owner", "admin", "hr", "employee"],
     },
     salary : String,
-    invitedBy : String
+    invitedBy : String,
+    // isActive : Boolean,
   },
   {
     timestamps: true,

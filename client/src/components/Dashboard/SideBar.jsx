@@ -61,6 +61,7 @@ export default function DashboardSidebar() {
   const filteredNav = navItems.filter((item) => {
     if (item.name === "Manage Staff" && role !== "admin") return false;
     if (item.name === "invite" && role === "employee") return false;
+    if(item.name === 'Attendance' && role === 'owner') return false
     return true;
   });
 

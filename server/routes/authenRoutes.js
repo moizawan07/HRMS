@@ -9,7 +9,7 @@ const { attendenceAdd, attendenceGet, approvalStatusChanged, attendenceRequestGe
 // 1: ------------------------ Invites Routes --------------------------------
 
 // This Route For Company Invite Create is Call By Owner;
-authenRoutes.post('/companyCreateInvite', upload.single('companyLogo'), companyInvite)
+authenRoutes.post('/companyCreateInvite', upload.single('companyLogo'), jwtVerify, companyInvite)
 
 // This Route For Company Invite Create is Call By Owner;
 authenRoutes.post('/HrOrEmployeeInvite', jwtVerify, EmployeeOrHrInvite)

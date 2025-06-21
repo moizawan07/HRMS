@@ -54,11 +54,15 @@ const companyInvite = async (req, res) => {
     //   { expiresIn: "2d" }
     // );
 
+    // console.log("reqUser==>", req.user);
+    
+
     const htmlContent = generateInviteEmail({
       companyName,
       role,
       companyLogo: result.secure_url,
       link: `${process.env.Invite_Link}/${addin._id}`,
+      inviteBy : req.user.userRole
     });
 
     await sendMail({
@@ -107,6 +111,7 @@ const EmployeeOrHrInvite = async (req, res) => {
      role,
      companyLogo : req.user.companyLogo,
     link: `http://localhost:5173/verify/${addin._id}`,
+    inviteBy : req.user.userRole
   });
 
   await sendMail({

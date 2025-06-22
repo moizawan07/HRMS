@@ -4,6 +4,7 @@ const  upload  = require('../middleware/multer')
 const { companyInvite, inviteVerify, inviteAccept,  EmployeeOrHrInvite } = require('../controller/invite.controller')
 const jwtVerify = require('../middleware/jwtVerify')
 const { attendenceAdd, attendenceGet, approvalStatusChanged, attendenceRequestGet } = require('../controller/attendence.controller')
+const { fetchAllUsers, updatedSalary } = require('../controller/user.controller')
 
 
 // 1: ------------------------ Invites Routes --------------------------------
@@ -36,5 +37,11 @@ authenRoutes.get('/attendenceRequestGet', jwtVerify, attendenceRequestGet)
 authenRoutes.post('/attendenceAppproval', jwtVerify, approvalStatusChanged )
 
 
+// 3: ------------------ Manage Staff Routes ----------------------
+//  fetch all Users collection print
+authenRoutes.get('/fetchAllUsers', fetchAllUsers)
+
+// Updated Salary Route
+authenRoutes.post('/updateSalary', updatedSalary)
 
 module.exports = authenRoutes;

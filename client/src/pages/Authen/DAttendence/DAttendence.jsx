@@ -8,27 +8,31 @@ import AttendanceTable from "./AttendenceTable";
 import RequestAttend from "./RequestAttend";
 
 function DAttendence() {
-  let [requestAttenCom, setRequestAttenCom] = useState(false); // Requeest  Attendence Componenent show state by default no
-  let {userConData, setUserConData} = useContext(UserContext)
+  let { userConData, setUserConData } = useContext(UserContext);
 
   return (
     <DashLayout>
       {/* Right Side */}
-      <div className="w-full min-h-screen pt-5 px-10" style={{ background: 'linear-gradient(135deg, #f3f0ff 0%, #e6e2fc 100%)'}}>
-        <Tabs>
+      <div
+        className="w-full min-h-screen pt-5 px-10"
+        style={{
+          background: "linear-gradient(135deg, #f3f0ff 0%, #e6e2fc 100%)",
+        }}
+      >
+        <Tabs defaultValue="YourAttendence">
           <TabsList className="bg-white rounded-lg p-1">
             <TabsTrigger
-              value="invite"
-              onClick={() => setRequestAttenCom(false)}
+              value="YourAttendence"
               className="px-4 py-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-700"
             >
               Your Attendence
             </TabsTrigger>
             {/* Other tabs present for layout consistency, but their content is placeholders */}
             <TabsTrigger
-              value="manage"
-              onClick={() => setRequestAttenCom(true)}
-              className={`px-8 py-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-700 ${userConData.user.role !== 'employee' ? '' : 'hidden'}`}
+              value="RequestAttendence"
+              className={`px-8 py-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-700 ${
+                userConData.user.role !== "employee" ? "" : "hidden"
+              }`}
             >
               Request Attendence
             </TabsTrigger>
@@ -47,21 +51,28 @@ function DAttendence() {
               Current Role
             </Button>
           </TabsList>
+
+          <div className="flex justify-between mt-10">
+            <h1>Check Attendence</h1>
+            <AddAttendanceModal
+              email={
+                userConData.user.role != "admin" ? userConData.user.email : ""
+              }
+              role={userConData.user.role}
+            />
+          </div>
+
+{/* Request Table */}
+          <TabsContent value="RequestAttendence">
+            <RequestAttend />
+          </TabsContent>
+
+{/* Attenfdence Show Table */}
+          <TabsContent value="YourAttendence">
+            <AttendanceTable />
+          </TabsContent>
+
         </Tabs>
-
-        <div className="flex justify-between mt-10">
-          <h1>Check Attendence</h1>
-          <AddAttendanceModal 
-            email={userConData.user.role != 'admin' ? userConData.user.email : ''}
-            role={userConData.user.role}
-          />
-        </div>
-
-        {requestAttenCom ? (
-          <RequestAttend />
-        ) : (
-         <AttendanceTable />
-        )}
       </div>
     </DashLayout>
   );

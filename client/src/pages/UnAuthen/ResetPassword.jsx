@@ -15,12 +15,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function ResetPassword() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordResetSuccess, setPasswordResetSuccess] = useState(false); // State for success message
+  let {token} = useParams()
 
   const form = useForm({
     defaultValues: {
@@ -34,17 +35,27 @@ function ResetPassword() {
   const newPasswordValue = form.watch("newPassword");
 
   // Handle form submission
-  function onSubmit(values) {
-    console.log("Reset Password form submitted:", values);
-    // In a real app, you'd send these values (e.g., token, newPassword) to your backend API
-    // Simulate API call
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        setPasswordResetSuccess(true); // Set success state to true
-        console.log("Password reset successfully!");
-        resolve();
-      }, 1500); // Simulate network delay
-    });
+  async function onSubmit(values) {
+    alert(token)
+   try {
+    let response = await fetch(`${import.meta.env.VITE_SERVER_URL}/reset-password/${token}`, {
+      method : 'POST',
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({password : values.newPassword})
+    })
+    let resData = await response.json()
+
+    if(response.status !== 200) throw new Error(resData.message);
+        setPasswordResetSuccess(true); 
+
+  } 
+  catch (error) {
+    alert(error)
+    setPasswordResetSuccess(false)
+  }
+        
   }
 
   return (

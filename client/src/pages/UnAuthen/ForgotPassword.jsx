@@ -28,16 +28,27 @@ function ForgotPassword() {
   });
 
   // Handle form submission
-  function onSubmit(values) {
-    console.log("Forgot Password form submitted:", values);
-    // Simulate API call to send reset email
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        setEmailSent(true); // Set state to true to display success message
-        console.log(`Password reset email sent to: ${values.email}`);
-        resolve();
-      }, 1500); // Simulate network delay
-    });
+ async function onSubmit(values) {
+   
+  try {
+    let response = await fetch(`${import.meta.env.VITE_SERVER_URL}/forget-password`, {
+      method : 'POST',
+      headers : {
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({email : values.email})
+    })
+    let resData = await response.json()
+
+    if(response.status !== 200) throw new Error(resData.message);
+        setEmailSent(true); 
+
+  } 
+  catch (error) {
+    alert(error)
+    setEmailSent(false)
+  }
+    
   }
 
   return (

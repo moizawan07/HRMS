@@ -25,7 +25,9 @@ const schema = mongoose.Schema(
     },
     salary : String,
     invitedBy : String,
-    // isActive : Boolean,
+    isActive : Boolean,
+     resetToken: String,
+    resetTokenExpiry: Date,
   },
   {
     timestamps: true,

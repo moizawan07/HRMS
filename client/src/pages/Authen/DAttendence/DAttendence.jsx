@@ -14,9 +14,9 @@ function DAttendence() {
   return (
     <DashLayout>
       {/* Right Side */}
-      <div className="w-full min-h-screen pt-15 px-10">
+      <div className="w-full min-h-screen pt-5 px-10" style={{ background: 'linear-gradient(135deg, #f3f0ff 0%, #e6e2fc 100%)'}}>
         <Tabs>
-          <TabsList className="bg-gray-100 rounded-lg p-1">
+          <TabsList className="bg-white rounded-lg p-1">
             <TabsTrigger
               value="invite"
               onClick={() => setRequestAttenCom(false)}
@@ -51,7 +51,7 @@ function DAttendence() {
 
         <div className="flex justify-between mt-10">
           <h1>Check Attendence</h1>
-          <AddAttendanceModal
+          <AddAttendanceModal 
             email={userConData.user.role != 'admin' ? userConData.user.email : ''}
             role={userConData.user.role}
           />

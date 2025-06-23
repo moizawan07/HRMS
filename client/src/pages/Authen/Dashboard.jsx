@@ -5,7 +5,7 @@ import TopHeader from "@/components/Dashboard/DashboardTab/TopHeader";
 import { LeftRightCards } from "@/components/Dashboard/DashboardTab/AllsimpleCom";
 import DashboardMetrics from "@/components/Dashboard/DashboardTab/MetricCards";
 import {CompaniesBarChart,  RevenueChart, TopPlansPieChart} from '@/components/Dashboard/DashboardTab/charts'
-import DashLayout from "@/components/Dashboard/DashLayout";
+import DashLayout from "@/layouts/DashLayout";
 
 
 

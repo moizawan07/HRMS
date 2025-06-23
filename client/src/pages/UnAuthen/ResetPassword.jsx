@@ -1,4 +1,4 @@
-import AuthLayout from "@/components/auth/AuthLayout";
+import AuthLayout from "@/layouts/AuthLayout";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff, Lock, CheckCircle, Import } from "lucide-react"; // Icons for password toggle and success

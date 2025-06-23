@@ -1,4 +1,4 @@
-import AuthLayout from "@/components/auth/AuthLayout";
+import AuthLayout from "@/layouts/AuthLayout";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Mail, CheckCircle } from "lucide-react"; // Icons for email and success

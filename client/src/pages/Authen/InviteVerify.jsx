@@ -1,16 +1,16 @@
-import AuthLayout from "@/components/auth/AuthLayout";
+import AuthLayout from "@/layouts/AuthLayout";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { data, useParams } from "react-router-dom";
+import { data, useNavigate, useParams } from "react-router-dom";
 
 
 function InviteVerify() {
   const {id} = useParams()
-  console.log('token ==>', id);
+ let navigate = useNavigate(false)
   
   const [inviteData, setInviteData] = useState({
     // companyName: "", companyLogo: "", firstName: "", lastName:"", email: "",
@@ -59,28 +59,37 @@ function InviteVerify() {
       credentials : 'include'
      })
     let resData = await res.json()
+
+    if(res.status !== 200) throw new Error(resData.message);
+    alert('Congrats You add Sucessfully Now Login whenever you want')
+    navigate('/login')
+    
    } catch (error) {
-    alert(error.message)
+    alert(error)
    }
   };
 
   return (
     <AuthLayout>
       {/* Right side */}
-      {!loading ? inviteExpired ? <div>Errorrr comess</div> : (
-        <div className="w-full lg:w-1/2 flex items-center justify-center min-h-screen bg-green-100 ">
-          <Card className="w-full">
-            <CardContent className="space-y-4 p-6">
-              <div className="text-center">
+      {!loading ? inviteExpired ? <div>Token has Expire</div> : (
+        <div className="w-full lg:w-1/2 flex items-center justify-center min-h-screen">
+          <Card className="w-full h-full py-0">
+            <CardContent className="space-y-2">
+              <div className="flex py-5 gap-10 items-center">
                 <img
                   src={inviteData.companyLogo}
                   alt="Company Logo"
-                  className="h-16 mx-auto mb-2 rounded-full"
+                  className="h-16  mb-2 rounded-full"
                 />
+                <div>
+
                 <h2 className="text-xl font-semibold">
-                 <span className="text-[18px]">Company:</span> <span className="uppercase"> {inviteData.companyName} </span>
+                 <span className="text-[18px] font-bold text-blue-500">Company:</span> 
+                 <span className="uppercase"> {inviteData.companyName} </span>
                 </h2>
-                <p className="text-xs mt-3 text-gray-700">Your Role In The Company <span className="uppercase font-semibold text-blue-500">{inviteData.role}</span> </p>
+                <p className="text-xs mt-3 text-gray-600">Your Role In The Company <span className="uppercase font-semibold text-blue-500">{inviteData.role}</span> </p>
+                </div>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

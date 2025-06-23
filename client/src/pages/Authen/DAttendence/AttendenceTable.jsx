@@ -39,7 +39,7 @@ const AttendanceTable = () => {
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #f3f0ff 0%, #e6e2fc 100%)' }}>
-      <div className="p-6 max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="bg-white rounded-2xl shadow-xl border border-purple-100 mb-8 p-8">
           <div className="flex items-center justify-between mb-6">
@@ -163,7 +163,7 @@ const AttendanceTable = () => {
                           </div>
                           <div>
                             <p className="font-semibold text-gray-900 text-lg">{entry.email}</p>
-                            <p className="text-sm text-gray-500">Employee #{String(index + 1).padStart(3, '0')}</p>
+                            <p className="text-sm text-gray-500">user #{String(index + 1).padStart(3, '0')}</p>
                           </div>
                         </div>
                       </td>

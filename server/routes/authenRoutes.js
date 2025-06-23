@@ -3,7 +3,7 @@ const authenRoutes = express.Router()
 const  upload  = require('../middleware/multer')
 const { companyInvite, inviteVerify, inviteAccept,  EmployeeOrHrInvite } = require('../controller/invite.controller')
 const jwtVerify = require('../middleware/jwtVerify')
-const { attendenceAdd, attendenceGet, approvalStatusChanged, attendenceRequestGet } = require('../controller/attendence.controller')
+const { attendenceAdd, attendenceGet, approvalStatusChanged, attendenceRequestGet, markUnAttended } = require('../controller/attendence.controller')
 const { fetchAllUsers, updatedSalary } = require('../controller/user.controller')
 
 
@@ -36,10 +36,15 @@ authenRoutes.get('/attendenceRequestGet', jwtVerify, attendenceRequestGet)
 // attendence Approved Status Changed Admin / Hr
 authenRoutes.post('/attendenceAppproval', jwtVerify, approvalStatusChanged )
 
+// Mark UnAttended Attendence Throw Systen 
+authenRoutes.get('/markUnAttended', jwtVerify, markUnAttended) 
+
+
+
 
 // 3: ------------------ Manage Staff Routes ----------------------
 //  fetch all Users collection print
-authenRoutes.get('/fetchAllUsers', fetchAllUsers)
+authenRoutes.get('/fetchAllUsers', jwtVerify, fetchAllUsers)
 
 // Updated Salary Route
 authenRoutes.post('/updateSalary', updatedSalary)

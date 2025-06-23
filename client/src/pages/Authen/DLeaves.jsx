@@ -1,4 +1,4 @@
-import DashLayout from "@/components/Dashboard/DashLayout"
+import DashLayout from "@/layouts/DashLayout"
 
 
 function DLeaves() {

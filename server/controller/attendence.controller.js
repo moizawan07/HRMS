@@ -72,6 +72,7 @@ const approvalStatusChanged = async (req, res) => {
 };
 
 
+// Attendence Reqest Get kis kis user kii Approval Status Pending ha us ka liye
 const attendenceRequestGet = async (req, res) => {
   let { userRole, campanyId } = req.user;
     if(userRole === 'employee') return res.status(400).json({message : 'Credentails issue'})
@@ -88,4 +89,69 @@ const attendenceRequestGet = async (req, res) => {
   }
 };
 
-module.exports = { attendenceGet, attendenceAdd, approvalStatusChanged, attendenceRequestGet };
+
+// Mark Unattended Attendence  jo user ne mark nhi kii us kii to wo system kr dai ga 
+const markUnAttended = async (req, res) => {
+   let { campanyId } = req.user;
+  try{
+    let allUsers = await userModel.find({ 
+      role: { $in: ["employee", "hr"] }, 
+      campanyId,
+    });
+
+   if(allUsers.length <= 0) return res.status(400).json({message : 'No Users Found In Your Company'})
+    
+
+    let now = new Date();
+
+let todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
+let todayEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59));
+    // let todayStart = new Date();
+    // todayStart.setHours(0, 0, 0, 0); // 12:00 AM
+
+    // let todayEnd = new Date();
+    // todayEnd.setHours(23, 59, 59, 999); // 11:59:59 PM
+    
+    
+    let todaysAttendances = await attendenceModel.find({
+    date: { $gte: todayStart, $lte: todayEnd },
+    companyId: campanyId
+});
+
+console.log("todayattendence==>", todaysAttendances);
+
+
+let attendedUserIds = todaysAttendances.map(att => att.userId.toString());
+
+let unattendedUsers = allUsers.filter(
+  user => !attendedUserIds.includes(user._id.toString())
+);
+
+
+if(unattendedUsers.length <= 0) return res.status(400).json({message : 'All Users add attendence already'})
+  
+for (let user of unattendedUsers) {
+  await attendenceModel.create({
+    userId: user._id,
+    companyId : user.campanyId,
+    email : user.email,
+    date:  new Date().toISOString().split("T")[0], // Aaj ki date
+    status: "Absent", // Status auto ho gaya
+    createdBy: "system", // System ne lagai hai, user ne nahi
+    approvalStatus: "Approved",
+    approvedBy : 'Admin'
+  });
+}
+
+    res.status(200).json({message : 'Attendence Update it'})
+
+  }
+  catch(error){
+    res.status(500).json({message : 'server error'})
+  }
+
+}
+
+
+
+module.exports = { attendenceGet, attendenceAdd, approvalStatusChanged, attendenceRequestGet, markUnAttended };

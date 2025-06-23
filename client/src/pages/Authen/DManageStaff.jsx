@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import DashLayout from "@/components/Dashboard/DashLayout";
+import DashLayout from "@/layouts/DashLayout";
 import { Users, Mail, MapPin, UserPlus, DollarSign, Shield, Search, Filter, EllipsisVertical, Cog, BadgeMinus, Eye, Pencil } from "lucide-react";
 
 const salaryRanges = {
   "20000-30000": "20k - 30k",
+  "31000-50000" : "31k- 50k",
   "51000-100000": "51k - 100k", 
   "101000-200000": "101k - 200k",
   "201000-500000": "201k - 500k"
@@ -19,6 +20,7 @@ const roleColors = {
 
 const salaryColors = {
   "20000-30000": "bg-yellow-100 text-yellow-800 border-yellow-200",
+  "31000-50000" : "bg-red-100 text-red-700 border-red-200",
   "51000-100000": "bg-green-100 text-green-800 border-green-200",
   "101000-200000": "bg-blue-100 text-blue-800 border-blue-200", 
   "201000-500000": "bg-purple-100 text-purple-800 border-purple-200"
@@ -90,7 +92,10 @@ const DManageStaff = () => {
 
    useEffect(() => {
     // Your original fetch logic
-    fetch(`${import.meta.env.VITE_SERVER_URL}/fetchAllUsers`)
+    fetch(`${import.meta.env.VITE_SERVER_URL}/fetchAllUsers`, {
+      method : 'GET',
+      credentials : 'include'
+    })
       .then(res => res.json())
       .then(data => setStaffData(data.data))
       .catch(err => console.log(err));
@@ -367,7 +372,7 @@ const DManageStaff = () => {
               <h3 className="text-xl font-semibold text-gray-900">Salary Distribution</h3>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {Object.entries(salaryRanges).map(([key, label]) => (
               <div key={key} className={`${salaryColors[key]} rounded-lg p-4 text-center`}>
                 <div className="text-2xl font-bold mb-1">{getSalaryRangeCount(key)}</div>

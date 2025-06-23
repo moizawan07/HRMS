@@ -1,4 +1,4 @@
-import DashLayout from "@/components/Dashboard/DashLayout";
+import DashLayout from "@/layouts/DashLayout";
 import React, { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 
@@ -47,17 +47,17 @@ import {
   DollarSign  
 } from "lucide-react"; // Icons
 import { UserContext } from "@/context/userContext";
+import { useNavigate } from "react-router-dom";
 
 function DInvite() {
   let { userConData, setUserConData } = useContext(UserContext); // use Context se role nike ga agr owner hua to ownerInviteCom wrna adminOrHrCom
-  console.log("moiz", userConData);
+ 
 
   return userConData.user.role === "owner" ? <OwnerInviteCom /> : <AdminOrHr />;
   // <AdminOrHr />
 }
 
 // Owner Invite Form
-
 function OwnerInviteCom() {
   const form = useForm({
     defaultValues: {
@@ -85,6 +85,7 @@ function OwnerInviteCom() {
   const companyLogoFile = watch("companyLogoFile");
   const companySize = watch("companySize");
   const headquarters = watch("headquarters");
+  let navigate = useNavigate(false)
 
   const [showSecondStep, setShowSecondStep] = useState(false);
 
@@ -168,6 +169,7 @@ function OwnerInviteCom() {
       if (response.status != 200) throw new Error(resData.message);
 
       alert(resData.message);
+      navigate('/dashboard')
     } catch (error) {
       alert(error);
     }
@@ -619,12 +621,14 @@ function OwnerInviteCom() {
   );
 }
 
+// Admin Or Hr
 function AdminOrHr() {
   // State to simulate the current logged-in user's role (admin or hr)
   let { userConData, setUserConData } = useContext(UserContext);
   const [currentUserRole, setCurrentUserRole] = useState(userConData.user.role); // Default to 'admin' userConData.user.role
 
   const [inviteSentSuccess, setInviteSentSuccess] = useState(false); // State for success message
+  let navigate = useNavigate(false)
 
   const form = useForm({
     defaultValues: {
@@ -654,9 +658,8 @@ function AdminOrHr() {
         }
       );
       let resData = await response.json();
-      console.log("resdaa==>", resData);
       if (response.status != 200) throw new Error(resData.message);
-
+      navigate('/dashboard')
       alert(resData.message);
     } catch (error) {
       alert(error);

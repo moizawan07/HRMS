@@ -106,7 +106,7 @@ const RequestAttendance = () => {
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #f3f0ff 0%, #e6e2fc 100%)' }}>
-      <div className="p-6 max-w-7xl mx-auto">
+      <div className=" max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="bg-white rounded-2xl shadow-xl border border-purple-100 mb-8 p-8">
           <div className="flex items-center justify-between mb-6">

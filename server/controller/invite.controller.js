@@ -188,5 +188,6 @@ const inviteAccept =  async (req, res) => {
    }
 }  
 
+
 // All Exports
 module.exports = { companyInvite, EmployeeOrHrInvite, inviteVerify, inviteAccept };

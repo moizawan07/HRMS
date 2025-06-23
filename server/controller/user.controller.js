@@ -2,8 +2,9 @@ let userModel = require("../models/user");
 
 // Fetch All Users Collection and send
 const fetchAllUsers = async (req, res) => {
+  let {campanyId} = req.user
   try {
-    let allUsers = await userModel.find({ role: { $nin: ["admin", "owner"] } });
+    let allUsers = await userModel.find({ role: { $nin: ["admin"] }, campanyId});
 
 
     if (!allUsers) return res.status(400).json({ message: "Users is Empty" });

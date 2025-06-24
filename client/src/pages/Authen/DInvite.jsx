@@ -48,14 +48,28 @@ import {
 } from "lucide-react"; // Icons
 import { UserContext } from "@/context/userContext";
 import { useNavigate } from "react-router-dom";
+import DashLoading from "@/components/Dashboard/Loading";
 
 function DInvite() {
   let { userConData, setUserConData } = useContext(UserContext); // use Context se role nike ga agr owner hua to ownerInviteCom wrna adminOrHrCom
+  let [loading, setLoading] = useState(true)
  
+  useEffect(() => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000);
+  }, [])
+
+   if(loading) {
+   return <DashLoading pageName= "Invite"/>
+  }
+
 
   return userConData.user.role === "owner" ? <OwnerInviteCom /> : <AdminOrHr />;
   // <AdminOrHr />
 }
+
 
 // Owner Invite Form
 function OwnerInviteCom() {

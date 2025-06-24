@@ -8,7 +8,6 @@ import ResetPassword from "@/pages/UnAuthen/ResetPassword";
 function UnAuthenRoutes() {
   return (
     <>
-      <Route path="*" element={<div>Page Not Found</div>} />
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />

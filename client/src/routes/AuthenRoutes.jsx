@@ -8,6 +8,7 @@ import DProfile from "@/pages/Authen/DProfile";
 import InviteVerify from "@/pages/Authen/InviteVerify";
 import { Route } from "react-router-dom";
 import DManageStaff from "@/pages/Authen/DManageStaff";
+import DCompanies from "@/pages/Authen/DCompanies";
 
 function AuthenRoutes() {
   return (
@@ -19,6 +20,8 @@ function AuthenRoutes() {
       <Route path="/dashboard/profile" element={<DProfile />} />
       <Route path="/dashboard/invite" element={<DInvite />} />
       <Route path="/verify/:id" element={<InviteVerify />} />
+      <Route path="/dashboard/companies" element={<DCompanies/>} />
+
     </>
   );
 }

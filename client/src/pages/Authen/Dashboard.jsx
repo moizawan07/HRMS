@@ -6,10 +6,27 @@ import { LeftRightCards } from "@/components/Dashboard/DashboardTab/AllsimpleCom
 import DashboardMetrics from "@/components/Dashboard/DashboardTab/MetricCards";
 import {CompaniesBarChart,  RevenueChart, TopPlansPieChart} from '@/components/Dashboard/DashboardTab/charts'
 import DashLayout from "@/layouts/DashLayout";
+import { useEffect, useState } from "react";
+import DashLoading from "@/components/Dashboard/Loading";
 
 
 
 function DashboardPage() {
+  let [loading, setLoading] = useState(true)
+  useEffect(() => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000);
+  }, [])
+
+ 
+  
+
+  if(loading) {
+   return <DashLoading  pageName= "Dashboard"/>
+  }
+
   return (
     <DashLayout>
         <TopHeader />

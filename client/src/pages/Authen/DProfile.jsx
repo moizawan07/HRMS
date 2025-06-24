@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,10 +20,12 @@ import {
 } from "lucide-react";
 import DashLayout from "@/layouts/DashLayout";
 import { UserContext } from "@/context/userContext";
+import DashLoading from "@/components/Dashboard/Loading";
 
 const HRMSProfile = () => {
   // Profile data stored in state with dummy data
   let { userConData } = useContext(UserContext);
+   let [loading, setLoading] = useState(true)
   let {
     firstName,
     lastName,
@@ -103,6 +105,20 @@ const HRMSProfile = () => {
       icon: <Shield className="w-4 h-4 text-purple-500" />,
     },
   ];
+
+
+
+  useEffect(() => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000);
+  }, [])
+
+   if(loading) {
+   return <DashLoading pageName="Profile"/>
+  }
+
 
   return (
     <DashLayout>

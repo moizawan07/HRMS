@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DashLayout from "@/layouts/DashLayout";
 import { Users, Mail, MapPin, UserPlus, DollarSign, Shield, Search, Filter, EllipsisVertical, Cog, BadgeMinus, Eye, Pencil } from "lucide-react";
+import DashLoading from "@/components/Dashboard/Loading";
 
 const salaryRanges = {
   "20000-30000": "20k - 30k",
@@ -75,20 +76,20 @@ const Select = ({ value, onValueChange, className, placeholder }) => {
 };
 
 const DManageStaff = () => {
-  const [staffData, setStaffData] = useState([
-    {
-      _id: "1",
-      firstName: "John Anderson",
-      email: "john.anderson@company.com",
-      role: "hr",
-      address: "New York",
-      invitedBy: "Sarah Wilson",
-      salary: "101000-200000"
-    },
-  ]);
+  const [staffData, setStaffData] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
+  let [loading, setLoading] = useState(true)
+
+  
+    useEffect(() => {
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000);
+    }, [])
+  
 
    useEffect(() => {
     // Your original fetch logic
@@ -100,6 +101,11 @@ const DManageStaff = () => {
       .then(data => setStaffData(data.data))
       .catch(err => console.log(err));
   }, []);
+
+
+   if(loading) {
+     return <DashLoading pageName="Manage Staff"/>
+    }
 
   const handleSalaryChange = async (userId, newSalary) => {
     

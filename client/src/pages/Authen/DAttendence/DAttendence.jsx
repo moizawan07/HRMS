@@ -1,15 +1,28 @@
 import DashLayout from "@/layouts/DashLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AddAttendanceModal from "./AddAttenceModal";
 import { UserContext } from "@/context/userContext";
 import AttendanceTable from "./AttendenceTable";
 import RequestAttend from "./RequestAttend";
+import DashLoading from "@/components/Dashboard/Loading";
 
 function DAttendence() {
   let { userConData, setUserConData } = useContext(UserContext);
+  let [loading, setLoading] = useState(true)
 
+useEffect(() => {
+  setLoading(true)
+  setTimeout(() => {
+    setLoading(false)
+  }, 2000);
+}, [])
+
+
+ if(loading) {
+ return <DashLoading pageName="Attendence"/>
+}
   // Mark UnAttended function call api
   const handleMarkAttended = async () => {
     try {
@@ -27,6 +40,7 @@ function DAttendence() {
       alert(error)
     }
   }
+
 
   return (
     <DashLayout>

@@ -173,7 +173,11 @@ const inviteAccept =  async (req, res) => {
         firstName,lastName,email,password:hashPass, gender,address, campanyId: companyAdd._id ,role, phoneNumber,dateOfBirth,
         invitedBy,
       })
-    }else{
+
+      companyAdd.adminId = userAdd._id
+      await companyAdd.save()
+    } // Else agr comapny size nhii menas company kii invite nhii kisi user kii invite aai ha 
+    else{
       let userAdd = await userModel.create({
         firstName,lastName,email,password : hashPass, gender, address, campanyId : companyId, invitedBy,  role, phoneNumber,dateOfBirth, salary
       })

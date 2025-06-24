@@ -57,15 +57,25 @@ export default function DashboardSidebar() {
 
 
  
-   useEffect(() => {
-  const filteredNav = navItems.filter((item) => {
-    if (item.name === "Manage Staff" && role !== "admin") return false;
-    if (item.name === "invite" && role === "employee") return false;
-    if(item.name === 'Attendance' && role === 'owner') return false
-    return true;
-  });
+  useEffect(() => {
+  let updatedNav = [...navItems]
+    .map((item) => {
+      if (item.name === "Attendance" && role === "owner") {
+        return {
+          ...item,
+          name: "Companies",
+          href: "/companies",
+        };
+      }
+      return item;
+    })
+    .filter((item) => {
+      if (item.name === "Manage Staff" && role !== "admin") return false;
+      if (item.name === "invite" && role === "employee") return false;
+      return true;
+    });
 
-  setNavItems(filteredNav);
+  setNavItems(updatedNav);
 }, [role]);
 
 

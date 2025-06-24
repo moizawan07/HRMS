@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const companySchema = new mongoose.Schema(
   {
+    adminId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
     companyName: String,
     companyLogo: String,
     companySize: String,
@@ -11,11 +15,14 @@ const companySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );
 
-const companyModel = mongoose.model('companies', companySchema)
+const companyModel = mongoose.model("companies", companySchema);
 
-
-module.exports  = companyModel
+module.exports = companyModel;

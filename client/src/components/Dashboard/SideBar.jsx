@@ -96,7 +96,7 @@ export default function DashboardSidebar() {
         ${isExpanded ? "w-[18%]" : "w-[5%]"} 
         p-4 border-r border-gray-200
         rounded-xl
-        bg-gradient-to-br from-purple-50 via-indigo-250 to-blue-100
+        bg-gradient-to-br from-purple-100 via-indigo-250 to-white
         sticky top-0.5 
       `}
       style={{ backgroundColor: "#E6E2FC" }}
@@ -185,8 +185,8 @@ export default function DashboardSidebar() {
                       transition-colors duration-200
                       ${!isExpanded ? "w-full" : ""}
                       ${
-                        window.location.pathname === item.href
-                          ? "bg-hrms-primary-dark text-gray-900 font-semibold"
+                        window.location.pathname === '/dashboard' + item.href
+                          ? "bg-hrms-primary-dark text-gray-900 font-bold"
                           : ""
                       }
                     `}
@@ -213,7 +213,7 @@ export default function DashboardSidebar() {
       </ScrollArea>
 
       {/* Logout Link - Always at the bottom */}
-      <div className="mt-auto pt-6">
+      <div className="mt-auto pt-3">
         {" "}
         {/* Use mt-auto to push to bottom */}
         <TooltipProvider>

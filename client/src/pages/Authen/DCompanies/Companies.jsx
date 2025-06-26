@@ -5,6 +5,7 @@ import { Button} from '@/components/ui/button';
 import {  Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import DashLayout from '@/layouts/DashLayout';
 import DashLoading from '@/components/Dashboard/Loading';
+import { Link } from 'react-router-dom';
 
 const DCompanies = () => {
   const [companies, setCompanies] = useState([]);
@@ -12,7 +13,6 @@ const DCompanies = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterSize, setFilterSize] = useState('all');
-  const [loading, setLoading] = useState(true);
 
   // Dummy data matching your API structure
 
@@ -20,7 +20,7 @@ const DCompanies = () => {
   // API call simulation
  useEffect(() => {
     const fetchCompanies = async () => {
-      setLoading(true);
+      
       try {
         let res = await fetch(`${import.meta.env.VITE_SERVER_URL}/getCompanies`);
         let resData = await res.json();
@@ -29,11 +29,9 @@ const DCompanies = () => {
 
         setCompanies(resData.data);
         setFilteredCompanies(resData.data);
-        setLoading(false);
 
       } catch (error) {
         alert(error)
-        setLoading(false)
       }
     };
 
@@ -45,8 +43,7 @@ const DCompanies = () => {
     if (sizeRange === '1-20') return { text: 'Small', type: 'small' };
     if (sizeRange === '21-150') return { text: 'Medium', type: 'medium' };
     if (sizeRange === '151-300') return { text: 'Large', type: 'large' };
-    if (sizeRange === '301-900') return { text: 'Enterprise', type: 'enterprise' };
-    if (sizeRange === '901+') return { text: 'Corporation', type: 'corporation' };
+    if (sizeRange === '301-900+') return { text: 'Enterprise', type: 'enterprise' };
     return { text: 'Unknown', type: 'unknown' };
   };
 
@@ -75,20 +72,17 @@ const DCompanies = () => {
       medium: 'bg-yellow-50 text-yellow-700 border-yellow-200',
       large: 'bg-green-50 text-green-700 border-green-200',
       enterprise: 'bg-purple-50 text-purple-700 border-purple-200',
-      corporation: 'bg-indigo-50 text-indigo-700 border-indigo-200'
     };
     return colors[type] || 'bg-gray-50 text-gray-700 border-gray-200';
   };
 
-  if (loading) {
-    return <DashLoading  pageName= "Companies"/>
-  }
+ 
 
   return (
-    <DashLayout>
+    // <DashLayout>
       <div className="min-h-screen bg-gradient-to-br from-[#E6E2FC] to-purple-100">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm shadow-lg border-b border-purple-200">
+      <div className="bg-white/80 backdrop-blur-sm shadow-lg rounded-xl shadow-purple-200 border-b border-purple-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
@@ -102,7 +96,7 @@ const DCompanies = () => {
             </div>
             <button className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all flex items-center space-x-2">
               <Plus className="h-5 w-5" />
-              <span>Add Company</span>
+              <span><Link to='/dashboard/invite'>Add Company</Link></span>
             </button>
           </div>
         </div>
@@ -182,8 +176,7 @@ const DCompanies = () => {
                   <option value="small">Small (1-20)</option>
                   <option value="medium">Medium (21-150)</option>
                   <option value="large">Large (151-300)</option>
-                  <option value="enterprise">Enterprise (301-900)</option>
-                  <option value="corporation">Corporation (901+)</option>
+                  <option value="enterprise">Enterprise (301-900 +)</option>
                 </select>
               </div>
             </div>
@@ -362,7 +355,7 @@ const DCompanies = () => {
         )}
       </div>
       </div>
-    </DashLayout>
+    // </DashLayout>
   );
 };
 

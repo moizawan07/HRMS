@@ -34,7 +34,8 @@
 }
 
 .active{
- background: linear-gradient(to left, #cfdef8, #e8daf9);
+ /* background: linear-gradient(to left, #cfdef8, #e8daf9); */
+ background-color: #e5d7f7;
 }
 .color{
  background: linear-gradient(to top, #fcfdfd, #d7c2f0);
@@ -47,6 +48,7 @@
 
 .bgcolor1{
   background: linear-gradient(to bottom, #4f4ff2, #dccbf3);
+ /* background-image: url("https://img.freepik.com/premium-psd/glassmorphism-laptop-mockup-design_23-2151580082.jpg?ga=GA1.1.244699205.1742808432&semt=ais_hybrid&w=740"); */
   border-radius:  250px 30px 350px 90px ;
 }
 

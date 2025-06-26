@@ -28,7 +28,7 @@ export const UserContextProvider = ({ children }) => {
       lastName: "Raza",
       password: "$2b$10$CTkJ4hw8IlxmdlEsaN.Kdue0KJtwm03tEletpaErXaR74vq5egMPq",
       phoneNumber: "+921245779635",
-      role: "admin",
+      role: "owner",
       updatedAt: "2025-06-17T10:37:35.831Z",
       _id: "6851456ff1be328181f544f2",
 }}

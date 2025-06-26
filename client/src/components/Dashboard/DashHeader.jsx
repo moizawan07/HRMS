@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -21,12 +21,13 @@ import {
   LogOut, // For Logout link in modal
   MessageSquare, // Alternative for messages if Mail is too generic
 } from "lucide-react";
+import { UserContext } from '@/context/userContext';
 
 // --- Dummy Data for Popovers ---
 
 // Profile Dropdown Links
 const profileLinks = [
-  { name: "My Profile", icon: User, href: "/profile" },
+  { name: "My Profile", icon: User, href: "/dashboard/profile" },
   { name: "Settings", icon: Settings, href: "/settings" },
   { name: "Status", icon: Activity, href: "/status" },
   { name: "My Account", icon: CreditCard, href: "/my-account" },
@@ -55,6 +56,8 @@ export default function DashboardHeader() {
   const [isProfilePopoverOpen, setIsProfilePopoverOpen] = useState(false);
   const [isNotificationsPopoverOpen, setIsNotificationsPopoverOpen] = useState(false);
   const [isMessagesPopoverOpen, setIsMessagesPopoverOpen] = useState(false);
+  const {userConData} = useContext(UserContext)
+  let {firstName, lastName, email} = userConData.user;
 
   return (
     <header className="flex items-center justify-between h-18 px-6 rounded-2xl my-2 color  border-b border-gray-200 shadow-sm w-full">
@@ -88,7 +91,7 @@ export default function DashboardHeader() {
               <Mail className="h-6 w-6" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-80 p-0 mr-4 sm:mr-0 z-50">
+          <PopoverContent className="w-80 p-0 mr-4 sm:mr-3 z-50">
             <div className="p-4 border-b border-gray-200">
               <h4 className="font-semibold text-lg">Messages</h4>
             </div>
@@ -127,7 +130,7 @@ export default function DashboardHeader() {
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-80 p-0 mr-4 sm:mr-0 z-50">
+          <PopoverContent className="w-80 p-0 mr-4 sm:mr-3 z-50">
             <div className="p-4 border-b border-gray-200">
               <h4 className="font-semibold text-lg">Notifications</h4>
             </div>
@@ -159,19 +162,19 @@ export default function DashboardHeader() {
         </Popover>
 
         {/* Profile Popover */}
-        <Popover open={isProfilePopoverOpen} onOpenChange={setIsProfilePopoverOpen}>
+        <Popover open={isProfilePopoverOpen} onOpenChange={setIsProfilePopoverOpen} >
           <PopoverTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full h-9 w-9 overflow-hidden" aria-label="User Profile">
               <Avatar className="h-9 w-9">
                 <AvatarImage src="/avatars/user-profile.jpg" alt="User Profile" /> {/* Replace with actual user avatar */}
-                <AvatarFallback>JD</AvatarFallback>
+                <AvatarFallback>{firstName[0] + lastName[0]}</AvatarFallback>
               </Avatar>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-56 p-0 mr-4 sm:mr-0 z-50"> {/* Adjusted width and margin */}
+          <PopoverContent className="w-56 p-0 mr-4 sm:mr-3 z-50"> {/* Adjusted width and margin */}
             <div className="p-4">
-              <p className="font-semibold text-gray-900">John Doe</p> {/* Replace with actual user name */}
-              <p className="text-sm text-gray-500">john.doe@example.com</p> {/* Replace with actual user email */}
+              <p className="font-semibold text-gray-900">{firstName + " " +  lastName}</p> {/* Replace with actual user name */}
+              <p className="text-sm text-gray-500">{email}</p> {/* Replace with actual user email */}
             </div>
             <Separator className="my-1" />
             <div className="flex flex-col py-1">

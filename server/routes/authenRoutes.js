@@ -5,7 +5,7 @@ const { companyInvite, inviteVerify, inviteAccept,  EmployeeOrHrInvite } = requi
 const jwtVerify = require('../middleware/jwtVerify')
 const { attendenceAdd, attendenceGet, approvalStatusChanged, attendenceRequestGet, markUnAttended } = require('../controller/attendence.controller')
 const { fetchAllUsers, updatedSalary } = require('../controller/user.controller')
-const { companiesGet } = require('../controller/campany.controller')
+const { companiesGet, companiesNotInviteAccept } = require('../controller/campany.controller')
 
 
 // 1: ------------------------ Invites Routes --------------------------------
@@ -55,5 +55,10 @@ authenRoutes.post('/updateSalary', updatedSalary)
 
 // 1: Get All comapnies and show the owner dashboard
 authenRoutes.get('/getCompanies', companiesGet)
+
+// 2: Get all Companies that Not Invite  Accept List
+authenRoutes.get('/companyInviteNotAccept', companiesNotInviteAccept)
+
+
 
 module.exports = authenRoutes;

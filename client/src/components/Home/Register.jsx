@@ -81,7 +81,7 @@ export default function HeroSectionRight() {
 
   return (
     <div className="flex-1 max-w-[600px] w-full p-4 md:p-8">
-      <Card className="w-full shadow-2xl border-t-8 border-hrms-primary-dark rounded-xl overflow-hidden">
+      <Card className="w-full shadow-2xl border-t-8 border-b-0 border-r-0 border-l-0   border-[#535a67]  rounded-xl overflow-hidden">
         <CardHeader className="text-center p-8 bg-white">
           <CardTitle className="text-4xl font-bold text-gray-900">Get Started</CardTitle>
         </CardHeader>

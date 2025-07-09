@@ -6,7 +6,7 @@ const jwtVerify = require('../middleware/jwtVerify')
 const { attendenceAdd, attendenceGet, approvalStatusChanged, attendenceRequestGet, markUnAttended } = require('../controller/attendence.controller')
 const { fetchAllUsers, updatedSalary } = require('../controller/user.controller')
 const { companiesGet, companiesNotInviteAccept } = require('../controller/campany.controller')
-const { getUserLeave, getUsersLeave, createALeave, updateLeaveStatus } = require('../controller/leave.controller')
+const { getUserLeave, createALeave, updateLeaveStatus, getLeavesRequests } = require('../controller/leave.controller')
 
 
 // 1: ------------------------ Invites Routes --------------------------------
@@ -65,15 +65,15 @@ authenRoutes.get('/companyInviteNotAccept', companiesNotInviteAccept)
 // get User Leaves 
 authenRoutes.get('/getUserLeave', jwtVerify, getUserLeave)
 
-// get Users Leaves 
-authenRoutes.get('/getUsersLeave', jwtVerify, getUsersLeave)
+// get Leaves Request 
+authenRoutes.get('/getLeavesRequests', jwtVerify, getLeavesRequests)
 
 // Create a  Leave
-authenRoutes.get('/createALeave', jwtVerify, createALeave)
+authenRoutes.post('/createALeave', jwtVerify, createALeave)
 
 
 // Update Leave Status
-authenRoutes.get('/updateALeave', jwtVerify, updateLeaveStatus)
+authenRoutes.post('/updateALeave', jwtVerify, updateLeaveStatus)
 
 
 

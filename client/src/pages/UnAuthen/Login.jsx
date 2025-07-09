@@ -1,7 +1,7 @@
 // components/LoginPage.jsx (or pages/auth/login.jsx)
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form"; // Only react-hook-form
-import { Eye, EyeOff, Mail, Lock } from "lucide-react"; // Icons for password toggle, email, and lock
+import { Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react"; // Icons for password toggle, email, and lock
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,7 @@ import { UserContext } from "@/context/userContext";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loginMsg, setLoginMsg] = useState(false);
+  const [loading, setLoading] = useState(false)
   let {userConData , setUserConData} = useContext(UserContext)
   let navigate = useNavigate(false)
 
@@ -38,7 +39,7 @@ export default function LoginPage() {
 
   // Handle form submission
   async function onSubmit(values) {
-    console.log("Login form submitted:", values);
+     setLoading(true)
     try {
        let res = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
         method : 'POST',
@@ -61,11 +62,11 @@ export default function LoginPage() {
     catch (error) {
       console.log(error);
     }
+    finally{
+      setLoading(false)
+    }
   }
-if(loginMsg){
-  console.log(loginMsg.includes('Invalid Credentials'));
 
-}
   
   return (
     <AuthLayout>
@@ -209,9 +210,11 @@ if(loginMsg){
               {/* Log In Button */}
               <Button
                 type="submit"
-                className="w-full h-10 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg py-2 rounded-md"
+                className={`w-full h-10 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg py-2 rounded-md
+                  ${loading && "opacity-50 cursor-not-allowed"}`}
+                disabled={loading}
               >
-                Log In
+                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Login"} 
               </Button>
             </form>
           </Form>

@@ -1,5 +1,6 @@
 let attendenceModel = require("../models/attendence");
 let userModel = require("../models/user");
+let moment = require('moment')
 
 // Attendence Record get and show the attendence
 const attendenceGet = async (req, res) => {
@@ -10,7 +11,7 @@ const attendenceGet = async (req, res) => {
       let employeAttendence = await attendenceModel.find({
         userId,
         approvalStatus: "Approved",
-      });
+      }).sort({createdAt : -1});
       return res
         .status(200)
         .json({ message: "Sucess", data: employeAttendence });
@@ -19,38 +20,61 @@ const attendenceGet = async (req, res) => {
     let allAttendence = await attendenceModel.find({
       companyId: campanyId,
       approvalStatus: "Approved",
-    });
+    }).sort({createdAt : -1});
+
     res.status(200).json({ message: "Sucess", data: allAttendence });
   } catch (error) {
+    console.log("error" , error);
+    
     res.status(500).json({ message: "Server Error" });
   }
 };
 
 // user hr add attendence
 const attendenceAdd = async (req, res) => {
-  let { email, status, date } = req.body;
+  let { email, status } = req.body;
   let { userRole, campanyId } = req.user;
-  try {
-    let user = await userModel.findOne({ email });
-    if (!user || user.role === 'admin' ) return res.status(400).json({ message: "Invalid Credentails" });
 
-    let addAtten = await attendenceModel.create({
+  try {
+    let user = await userModel.findOne({ email, campanyId });
+    if (!user || user.role === 'admin') {
+      return res.status(400).json({ message: "Invalid Credentials" });
+    }
+
+    const now = moment();
+    const twentyFourHoursAgo = moment().subtract(24, 'hours');
+    console.log("now ==>", now);
+    console.log("twenetyFours Hour Ago ==>", twentyFourHoursAgo);
+    
+
+    let alreadyMarked = await attendenceModel.findOne({
       userId: user._id,
-      companyId : campanyId,
+      companyId: campanyId,
+      createdAt: { $gte: twentyFourHoursAgo.toDate(), $lte: now.toDate() },
+    });
+
+    if (alreadyMarked) {
+      return res.status(400).json({ message: "Attendance already marked in the last 24 hours" });
+    }
+
+    await attendenceModel.create({
+      userId: user._id,
+      companyId: campanyId,
       email,
       status,
-      date,
+      date: now.format("YYYY-MM-DD"),
       createdBy: userRole,
       approvalStatus: "Pending",
     });
 
-    res.status(200).json({ message: "Attendence Submit" });
+    res.status(200).json({ message: "Attendance Submitted" });
+
   } catch (error) {
-   console.log('catch==>', error.message);
-   
+    console.log('catch==>', error.message);
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 // ApprovalStatus Change Like  Approved / Reject Attendence Hr And Admin
 const approvalStatusChanged = async (req, res) => {
@@ -92,65 +116,55 @@ const attendenceRequestGet = async (req, res) => {
 
 // Mark Unattended Attendence  jo user ne mark nhi kii us kii to wo system kr dai ga 
 const markUnAttended = async (req, res) => {
-   let { campanyId } = req.user;
-  try{
-    let allUsers = await userModel.find({ 
-      role: { $in: ["employee", "hr"] }, 
+  let { campanyId } = req.user;
+
+  try {
+    let allUsers = await userModel.find({
+      role: { $in: ["employee", "hr"] },
       campanyId,
     });
 
-   if(allUsers.length <= 0) return res.status(400).json({message : 'No Users Found In Your Company'})
-    
+    if (allUsers.length <= 0)
+      return res.status(400).json({ message: 'No Users Found In Your Company' });
 
-    let now = new Date();
+    const now = moment();
+    const twentyFourHoursAgo = moment().subtract(24, 'hours');
 
-let todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0));
-let todayEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59));
-    // let todayStart = new Date();
-    // todayStart.setHours(0, 0, 0, 0); // 12:00 AM
+    let recentAttendances = await attendenceModel.find({
+      companyId: campanyId,
+      createdAt: { $gte: twentyFourHoursAgo.toDate(), $lte: now.toDate() },
+    });
 
-    // let todayEnd = new Date();
-    // todayEnd.setHours(23, 59, 59, 999); // 11:59:59 PM
-    
-    
-    let todaysAttendances = await attendenceModel.find({
-    date: { $gte: todayStart, $lte: todayEnd },
-    companyId: campanyId
-});
+    let attendedUserIds = recentAttendances.map(att => att.userId.toString());
 
-console.log("todayattendence==>", todaysAttendances);
+    let unattendedUsers = allUsers.filter(
+      user => !attendedUserIds.includes(user._id.toString())
+    );
 
+    if (unattendedUsers.length <= 0)
+      return res.status(400).json({ message: 'All Users already marked attendance' });
 
-let attendedUserIds = todaysAttendances.map(att => att.userId.toString());
+    for (let user of unattendedUsers) {
+      await attendenceModel.create({
+        userId: user._id,
+        companyId: user.campanyId,
+        email: user.email,
+        date: now.format("YYYY-MM-DD"),
+        status: "Absent",
+        createdBy: "system",
+        approvalStatus: "Approved",
+        approvedBy: "Admin"
+      });
+    }
 
-let unattendedUsers = allUsers.filter(
-  user => !attendedUserIds.includes(user._id.toString())
-);
+    res.status(200).json({ message: 'Unattended users marked as Absent' });
 
-
-if(unattendedUsers.length <= 0) return res.status(400).json({message : 'All Users add attendence already'})
-  
-for (let user of unattendedUsers) {
-  await attendenceModel.create({
-    userId: user._id,
-    companyId : user.campanyId,
-    email : user.email,
-    date:  new Date().toISOString().split("T")[0], // Aaj ki date
-    status: "Absent", // Status auto ho gaya
-    createdBy: "system", // System ne lagai hai, user ne nahi
-    approvalStatus: "Approved",
-    approvedBy : 'Admin'
-  });
-}
-
-    res.status(200).json({message : 'Attendence Update it'})
-
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: 'Server Error' });
   }
-  catch(error){
-    res.status(500).json({message : 'server error'})
-  }
+};
 
-}
 
 
 

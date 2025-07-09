@@ -32,7 +32,8 @@ const schema = mongoose.Schema({
   },
   //   checkIn: "09:00",
   //   checkOut: "17:00",
-});
+},{timestamps: true,}
+);
 
 const attendenceModel = mongoose.model("attendence", schema);
 

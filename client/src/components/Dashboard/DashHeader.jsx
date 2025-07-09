@@ -167,7 +167,7 @@ export default function DashboardHeader() {
             <Button variant="ghost" size="icon" className="rounded-full h-9 w-9 overflow-hidden" aria-label="User Profile">
               <Avatar className="h-9 w-9">
                 <AvatarImage src="/avatars/user-profile.jpg" alt="User Profile" /> {/* Replace with actual user avatar */}
-                <AvatarFallback>{firstName[0] + lastName[0]}</AvatarFallback>
+                <AvatarFallback className='uppercase text-purple-600 font-bold'>{firstName[0] + lastName[0]}</AvatarFallback>
               </Avatar>
             </Button>
           </PopoverTrigger>

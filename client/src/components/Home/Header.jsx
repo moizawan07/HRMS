@@ -69,28 +69,17 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
   Menu, 
   X, 
   Users, 
-  Calendar, 
   FileText, 
-  BarChart3, 
   Settings, 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Facebook, 
-  Twitter, 
-  Linkedin, 
-  Instagram,
-  ChevronDown,
   Clock,
-  Shield,
-  Award
+  Fingerprint,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 // Header Component
 const HRMSHeader = () => {
@@ -99,20 +88,8 @@ const HRMSHeader = () => {
 
   const navigationItems = [
     { name: 'Home', href: '#', active: true },
-    { name: 'Employee Management', href: '#', icon: <Users className="w-4 h-4" /> },
-    { name: 'Attendance', href: '#', icon: <Calendar className="w-4 h-4" /> },
-    { 
-      name: 'Reports', 
-      href: '#', 
-      icon: <BarChart3 className="w-4 h-4" />,
-      dropdown: [
-        { name: 'Employee Reports', href: '#' },
-        { name: 'Attendance Reports', href: '#' },
-        { name: 'Payroll Reports', href: '#' },
-        { name: 'Performance Reports', href: '#' }
-      ]
-    },
-    { name: 'Payroll', href: '#', icon: <FileText className="w-4 h-4" /> },
+    { name: 'About', href: '#', icon: <FileText className="w-4 h-4" /> },
+    { name: 'login', href: '/login', icon: <Fingerprint /> },
     { name: 'Settings', href: '#', icon: <Settings className="w-4 h-4" /> }
   ];
 
@@ -135,49 +112,15 @@ const HRMSHeader = () => {
           <nav className="hidden lg:flex items-center space-x-1">
             {navigationItems.map((item, index) => (
               <div key={index} className="relative">
-                {item.dropdown ? (
-                  <div className="relative">
-                    <Button 
-                      variant="ghost" 
-                      className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium transition-colors ${
-                        item.active ? 'text-purple-600 bg-purple-50' : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
-                      }`}
-                      onMouseEnter={() => setIsDropdownOpen(true)}
-                      onMouseLeave={() => setIsDropdownOpen(false)}
-                    >
-                      {item.icon}
-                      <span>{item.name}</span>
-                      <ChevronDown className="w-4 h-4" />
-                    </Button>
-                    {isDropdownOpen && (
-                      <div 
-                        className="absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50"
-                        onMouseEnter={() => setIsDropdownOpen(true)}
-                        onMouseLeave={() => setIsDropdownOpen(false)}
-                      >
-                        {item.dropdown.map((dropItem, dropIndex) => (
-                          <a
-                            key={dropIndex}
-                            href={dropItem.href}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
-                          >
-                            {dropItem.name}
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
+               
                   <Button 
                     variant="ghost" 
                     className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium transition-colors ${
-                      item.active ? 'text-purple-600 bg-purple-50' : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
-                    }`}
-                  >
+                      item.active ? 'text-purple-600 bg-purple-50' : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'}`
+                      }>
                     {item.icon}
-                    <span>{item.name}</span>
+                    <Link to={item.href}>{item.name}</Link>
                   </Button>
-                )}
               </div>
             ))}
           </nav>
@@ -188,12 +131,6 @@ const HRMSHeader = () => {
               <Clock className="w-3 h-3 mr-1" />
               Online
             </Badge>
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                JD
-              </div>
-              <span className="text-sm font-medium text-gray-700">John Doe</span>
-            </div>
             <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
               Dashboard
             </Button>
@@ -225,30 +162,13 @@ const HRMSHeader = () => {
                     }`}
                   >
                     {item.icon}
-                    <span>{item.name}</span>
+                    <Link to={item.href}>{item.name}</Link>
                   </Button>
-                  {item.dropdown && (
-                    <div className="ml-4 space-y-1">
-                      {item.dropdown.map((dropItem, dropIndex) => (
-                        <Button 
-                          key={dropIndex}
-                          variant="ghost" 
-                          className="w-full justify-start text-sm text-gray-600 pl-6"
-                        >
-                          {dropItem.name}
-                        </Button>
-                      ))}
-                    </div>
-                  )}
                 </div>
               ))}
               <div className="border-t border-gray-200 pt-3 mt-3">
                 <div className="flex items-center space-x-3 px-3 py-2">
-                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                    JD
-                  </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-700">John Doe</p>
                     <Badge variant="secondary" className="bg-green-100 text-green-700 border-green-200 text-xs">
                       Online
                     </Badge>

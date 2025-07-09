@@ -87,7 +87,7 @@ export const NotFound = () => {
                 { name: 'Documentation', desc: 'API guides' },
                 { name: 'Support', desc: 'Get help' }
               ].map((item) => (
-                <p
+                <div
                   key={item.name}
                   className="group p-4 border border-gray-100 rounded-xl hover:border-violet-200 hover:bg-violet-50 transition-all duration-200"
                 >
@@ -95,7 +95,7 @@ export const NotFound = () => {
                     {item.name}
                   </h3>
                   <p className="text-sm text-gray-500 mt-1">{item.desc}</p>
-                </p>
+                </div>
               ))}
             </div>
           </div>

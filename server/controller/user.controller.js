@@ -1,5 +1,6 @@
 let userModel = require("../models/user");
 
+
 // Fetch All Users Collection and send
 const fetchAllUsers = async (req, res) => {
   let {campanyId} = req.user

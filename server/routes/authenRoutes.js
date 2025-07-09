@@ -6,6 +6,7 @@ const jwtVerify = require('../middleware/jwtVerify')
 const { attendenceAdd, attendenceGet, approvalStatusChanged, attendenceRequestGet, markUnAttended } = require('../controller/attendence.controller')
 const { fetchAllUsers, updatedSalary } = require('../controller/user.controller')
 const { companiesGet, companiesNotInviteAccept } = require('../controller/campany.controller')
+const { getUserLeave, getUsersLeave, createALeave, updateLeaveStatus } = require('../controller/leave.controller')
 
 
 // 1: ------------------------ Invites Routes --------------------------------
@@ -51,13 +52,28 @@ authenRoutes.get('/fetchAllUsers', jwtVerify, fetchAllUsers)
 authenRoutes.post('/updateSalary', updatedSalary)
 
 
-// ------------------ Companies Routes ---------------------------------- 
+// ------------------ Companies Routes ------------------------------ 
 
 // 1: Get All comapnies and show the owner dashboard
 authenRoutes.get('/getCompanies', companiesGet)
 
 // 2: Get all Companies that Not Invite  Accept List
 authenRoutes.get('/companyInviteNotAccept', companiesNotInviteAccept)
+
+
+// ------------------- Leaves Routes --------------------------------
+// get User Leaves 
+authenRoutes.get('/getUserLeave', jwtVerify, getUserLeave)
+
+// get Users Leaves 
+authenRoutes.get('/getUsersLeave', jwtVerify, getUsersLeave)
+
+// Create a  Leave
+authenRoutes.get('/createALeave', jwtVerify, createALeave)
+
+
+// Update Leave Status
+authenRoutes.get('/updateALeave', jwtVerify, updateLeaveStatus)
 
 
 

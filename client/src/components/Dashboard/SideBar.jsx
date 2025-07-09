@@ -24,7 +24,7 @@ import {
   PanelLeftOpen, // Icon for expanding
   BadgePlus,
 } from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { UserContext } from "@/context/userContext";
 
 // --- Navigation Data ---
@@ -45,15 +45,16 @@ const navItems = [
 const logoutItem = {
   name: "Logout",
   icon: LogOut,
-  href: "/logout",
+  href: "#",
   isLogout: true,
 };
 
 export default function DashboardSidebar() {
-  console.log("sidebar com run==>");
   const [navItemsSta, setNavItems] = useState(navItems)
   let { userConData, setUserConData } = useContext(UserContext);
+  const [isExpanded, setIsExpanded] = useState(true);
   let { role } = userConData.user;
+  let navigate = useNavigate(null)
 
 
  
@@ -72,6 +73,7 @@ export default function DashboardSidebar() {
     .filter((item) => {
       if (item.name === "Manage Staff" && role !== "admin") return false;
       if (item.name === "invite" && role === "employee") return false;
+      if (item.name === "Leaves" && role === "owner") return false;
       return true;
     });
 
@@ -79,11 +81,16 @@ export default function DashboardSidebar() {
 }, [role]);
 
 
-  const [isExpanded, setIsExpanded] = useState(true);
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
   };
+
+  const handleLogout = () => {
+     setUserConData(null)
+     alert('logout sucessfully')
+     navigate('/')
+  }
 
   return (
     // Main sidebar container with gradient background and responsive width
@@ -219,13 +226,14 @@ export default function DashboardSidebar() {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <NavLink
-                to={logoutItem.href} // Use actual router links if you have one
-                className={`
+             <Button
+                variant="outlined"
+                onClick={handleLogout}
+                className={` w-[70%]
                   flex items-center
                   ${isExpanded ? "justify-start" : "justify-center"}
                   gap-3 p-3 rounded-lg text-red-600
-                  hover:bg-red-100 hover:text-red-700
+                  bg-red-100 hover:text-red-700
                   transition-colors duration-200
                   ${!isExpanded ? "w-full" : ""}
                 `}
@@ -238,7 +246,7 @@ export default function DashboardSidebar() {
                     {logoutItem.name}
                   </span>
                 )}
-              </NavLink>
+              </Button>
             </TooltipTrigger>
             {!isExpanded && (
               <TooltipContent side="right">

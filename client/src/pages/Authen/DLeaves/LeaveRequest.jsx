@@ -32,18 +32,18 @@ const dummyData = [
 ];
 
 function LeaveRequest() {
-  const [leaveRequests, setLeaveRequests] = useState(dummyData);
+  const [leaveRequests, setLeaveRequests] = useState([]);
 
-  //  useEffect(() => {
-  //     fetch(`${import.meta.env.VITE_SERVER_URL}/leavesRequest`, {
-  //        method : 'GET',
-  //        credentials : 'include'
-  //     })
-  //     .then(res => res.json())
-  //     .then(data => setLeaveRequests(data.data))
-  //     .catch(error => alert(error.message));
+   useEffect(() => {
+      fetch(`${import.meta.env.VITE_SERVER_URL}/getLeavesRequests`, {
+         method : 'GET',
+         credentials : 'include'
+      })
+      .then(res => res.json())
+      .then(data => setLeaveRequests(data.data))
+      .catch(error => alert(error.message));
 
-  //   }, [])
+    }, [])
 
   return (
     <div>
@@ -56,7 +56,7 @@ function LeaveRequest() {
       {leaveRequests.length > 0 && (
         <div className="space-y-4">
           {leaveRequests.map((leave) => (
-            <LeaveCard key={leave.id} leave={leave} showEmployee={true} />
+            <LeaveCard key={leave._id} leave={leave} showEmployee={true} />
           ))}
         </div>
       )}

@@ -1,8 +1,9 @@
 const leaveModel = require("../models/leave");
 
 // get User Leave
-export const getUserLeave = async (req, res) => {
+ const getUserLeave = async (req, res) => {
   let { userId, userRole, campanyId } = req.user;
+  
   try {
     // If Employe hit api so us ko apni Leaves Record show hogiii agr admin or hr hua use sb kiii
     if (userRole === "employee") {
@@ -12,17 +13,17 @@ export const getUserLeave = async (req, res) => {
           // approvalStatus: "Approved",
         })
         .sort({ createdAt: -1 });
-      return res.status(200).json({ message: "Sucess", data: employeLeaves });
+      return res.status(200).json({ message: "Sucess1", data: employeLeaves });
     }
     // ----------------------------------------------------
     let allLeaves = await leaveModel
       .find({
         companyId: campanyId,
-        // approvalStatus: "Approved",
+        status: "Approved",
       })
       .sort({ createdAt: -1 });
 
-    res.status(200).json({ message: "Sucess", data: allLeaves });
+    res.status(200).json({ message: "Sucess2", data: allLeaves });
   } catch (error) {
     console.log("error", error);
 
@@ -43,7 +44,7 @@ export const getUserLeave = async (req, res) => {
 // };
 
 // get Requestted Leaves 
-export const getLeavesRequests = async (req, res) => {
+ const getLeavesRequests = async (req, res) => {
   let {campanyId, userRole} = req.user
   if(userRole === 'employee') return res.status(401).json({message : 'Credentails issue'})
 
@@ -61,9 +62,9 @@ export const getLeavesRequests = async (req, res) => {
 }
 
 // Create A Leave
-export const createALeave = async (req, res) => {
+ const createALeave = async (req, res) => {
   let { userId, campanyId } = req.user;
-  let { name, email, fromDate, toDate, reason, type } = req.body;
+  let { name, email, fromDate, toDate, reason, leaveType } = req.body;
 
   try {
     let create = await leaveModel.create({
@@ -74,7 +75,7 @@ export const createALeave = async (req, res) => {
       fromDate,
       toDate,
       reason,
-      type,
+      leaveType,
     });
     res.status(200).json({ message: "Submitted" });
   } catch (error) {
@@ -83,7 +84,7 @@ export const createALeave = async (req, res) => {
 };
 
 // Leave Status Changed Approved Or
-export const updateLeaveStatus = async (req, res) => {
+ const updateLeaveStatus = async (req, res) => {
   let { userRole } = req.user;
   let { status, LeaveId } = req.body;
   try {
@@ -95,3 +96,8 @@ export const updateLeaveStatus = async (req, res) => {
     res.status(500).json({ message: "Serevr error" });
   }
 };
+
+
+module.exports = {getUserLeave, getLeavesRequests, createALeave, updateLeaveStatus}
+
+

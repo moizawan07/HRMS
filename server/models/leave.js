@@ -15,7 +15,7 @@ const schema = mongoose.Schema(
     fromDate: Date,
     toDate: Date,
     reason: String,
-    type: {
+    leaveType: {
       type: String,
       enum: ["Casual", "Sick", "Annual"],
     },

@@ -11,18 +11,18 @@ import { LeaveCard } from "./LeaveCard";
   ];
 
 function UserLeaves() {
-   const [userLeaves, setUserLeaves] = useState(dummyData)
+   const [userLeaves, setUserLeaves] = useState([])
 
-//  useEffect(() => {
-//    fetch(`${import.meta.env.VITE_SERVER_URL}/userLeave`, {
-//       method : 'GET',
-//       credentials : 'include'
-//    })
-//    .then(res => res.json())
-//    .then(data => setUserLeaves(data.data))
-//    .catch(error => alert(error.message));
+ useEffect(() => {
+   fetch(`${import.meta.env.VITE_SERVER_URL}/getUserLeave`, {
+      method : 'GET',
+      credentials : 'include'
+   })
+   .then(res => res.json())
+   .then(data => setUserLeaves(data.data))
+   .catch(error => alert(error.message));
 
-//  }, [])
+ }, [])
 
   return (
     <div>

@@ -18,19 +18,19 @@ import LeaveRequest from './LeaveRequest';
 import { StatusBadge } from './LeaveCard';
 import { UserContext } from '@/context/userContext';
 
+
 const LeaveManagementPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const {userConData: {user}} = useContext(UserContext)
+
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    leaveType: '',
+    name: user.firstName + ' ' + user.lastName,
+    email: user.email,
+    leaveType: 'Casual',
     fromDate: '',
     toDate: '',
     reason: ''
   });
-  const {userConData: {user}} = useContext(UserContext)
-   console.log("index ==>", user);
-   
  
   const leaveHistory = [
     { id: 1, type: 'Annual Leave', from: '2024-06-01', to: '2024-06-05', status: 'Approved', days: 5 },
@@ -54,17 +54,37 @@ const LeaveManagementPage = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log('Form submitted:', formData);
+    try{
+    let response  = await fetch(`${import.meta.env.VITE_SERVER_URL}/createALeave`, {
+      method : 'POST',
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify(formData),
+      credentials : 'include',
+    })
+    let resData = await response.json()
+
+     if(response.status !== 200) throw new Error(resData);
+
+     alert(resData.message)
+     
+    }
+    catch(error){
+      alert(error.message)
+    }
+
     setIsModalOpen(false);
     setFormData({
-      name: '',
-      email: '',
-      leaveType: '',
+      ...formData,
+      leaveType: 'Casual',
       fromDate: '',
       toDate: '',
       reason: ''
     });
+
   };
 
   return (
@@ -100,11 +120,10 @@ const LeaveManagementPage = () => {
             </div>
           </CardHeader>
           <CardContent className="p-6">
-            <Tabs defaultValue={`${user.role !== 'admin' ? 'your-leaves' : 'requests'}`} className="w-full">
+            <Tabs defaultValue='your-leaves' className="w-full">
               <TabsList className="grid w-full grid-cols-3 mb-8 bg-gradient-to-r from-purple-100 to-indigo-100 p-1 rounded-lg">
                 <TabsTrigger 
                   value="your-leaves"
-                //   disable={"true"} 
                   className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white"
                 >
                   <User className="w-4 h-4 mr-2" />
@@ -167,8 +186,9 @@ const LeaveManagementPage = () => {
                       id="name"
                       name="name"
                       value={formData.name}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                       placeholder="Enter your full name"
+                      disabled={true}
                       className="pl-10 border-purple-200 focus:border-purple-500"
                     />
                   </div>
@@ -183,7 +203,8 @@ const LeaveManagementPage = () => {
                       name="email"
                       type="email"
                       value={formData.email}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
+                      disabled={true}
                       placeholder="Enter your email address"
                       className="pl-10 border-purple-200 focus:border-purple-500"
                     />
@@ -200,11 +221,9 @@ const LeaveManagementPage = () => {
                       <SelectValue placeholder="Select leave type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="annual">Annual Leave</SelectItem>
-                      <SelectItem value="sick">Sick Leave</SelectItem>
-                      <SelectItem value="personal">Personal Leave</SelectItem>
-                      <SelectItem value="maternity">Maternity Leave</SelectItem>
-                      <SelectItem value="emergency">Emergency Leave</SelectItem>
+                      <SelectItem value="Casual">Casual Leave</SelectItem>
+                      <SelectItem value="Annual">Annual Leave</SelectItem>
+                      <SelectItem value="Sick">Sick Leave</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

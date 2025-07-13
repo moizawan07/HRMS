@@ -86,10 +86,15 @@ const leaveModel = require("../models/leave");
 // Leave Status Changed Approved Or
  const updateLeaveStatus = async (req, res) => {
   let { userRole } = req.user;
-  let { status, LeaveId } = req.body;
+  let { statusValue } = req.body;
+  let { id } = req.params;
+
+  console.log("req BOSY==>", req.body);
+  
+
   try {
-    let updated = await leaveModel.findByIdAndUpdate(leaveId, {
-      $set: { status, approvedBy: userRole },
+    let updated = await leaveModel.findByIdAndUpdate(id, {
+      $set: { status : statusValue, approvedBy: userRole },
     });
     res.status(200).json({ message: "sucessfully updated" });
   } catch (error) {

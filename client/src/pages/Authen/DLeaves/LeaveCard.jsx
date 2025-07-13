@@ -7,8 +7,23 @@ import { useState } from "react";
 
 export const LeaveCard = ({ leave, showEmployee = false }) => {
   const [leaves, setLeaves] = useState(leave)
-  const handleStatusChanged = (id, statusValue) => {
+
+
+  const handleStatusChanged = async (id, statusValue) => {
+   try {
+       let res = await fetch(`${import.meta.env.VITE_SERVER_URL}/updateALeave/${id}`, {
+        method: 'PUT',
+        headers : {
+          "Content-Type" : 'Application/json'
+        },
+        body: JSON.stringify({statusValue}),
+        credentials: 'include'
+       })
      setLeaves({...leaves, status: statusValue})
+   } catch (error) {
+    
+   }
+    
      
   }
 

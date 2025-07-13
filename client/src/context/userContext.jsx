@@ -1,10 +1,22 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   let [userConData, setUserConData] = useState(null);
   console.table("userConData ==>", userConData);
+
+
+  // this effect for the testing
+  useEffect(() => {
+     let data = window.localStorage.getItem('loginData')
+     console.log("useeffect run ===> data", data);
+     
+        if(data){
+          setUserConData(JSON.parse(data))
+        }
+  }, [])
+  
 
   return (
     <UserContext.Provider value={{ userConData, setUserConData }}>

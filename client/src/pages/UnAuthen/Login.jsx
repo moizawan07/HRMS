@@ -57,6 +57,8 @@ export default function LoginPage() {
         alert('sucessfullylogin')
         setUserConData(resData.data)
 
+        window.localStorage.setItem('loginData', JSON.stringify(resData.data))
+
         navigate('/dashboard')
     } 
     catch (error) {

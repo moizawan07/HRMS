@@ -73,7 +73,7 @@ authenRoutes.post('/createALeave', jwtVerify, createALeave)
 
 
 // Update Leave Status
-authenRoutes.post('/updateALeave', jwtVerify, updateLeaveStatus)
+authenRoutes.put('/updateALeave/:id', jwtVerify, updateLeaveStatus)
 
 
 

@@ -7,6 +7,7 @@ const { attendenceAdd, attendenceGet, approvalStatusChanged, attendenceRequestGe
 const { fetchAllUsers, updatedSalary } = require('../controller/user.controller')
 const { companiesGet, companiesNotInviteAccept } = require('../controller/campany.controller')
 const { getUserLeave, createALeave, updateLeaveStatus, getLeavesRequests } = require('../controller/leave.controller')
+const { salaryPay, getSalaries } = require('../controller/salary.controller')
 
 
 // 1: ------------------------ Invites Routes --------------------------------
@@ -71,10 +72,15 @@ authenRoutes.get('/getLeavesRequests', jwtVerify, getLeavesRequests)
 // Create a  Leave
 authenRoutes.post('/createALeave', jwtVerify, createALeave)
 
-
 // Update Leave Status
 authenRoutes.put('/updateALeave/:id', jwtVerify, updateLeaveStatus)
 
 
+
+// ------------ Salary Routes ----------------------------------
+// Pay Salary 
+authenRoutes.post('/salaryPay', jwtVerify, salaryPay)
+
+authenRoutes.get('/getSalaries/:companyId', jwtVerify, getSalaries)
 
 module.exports = authenRoutes;

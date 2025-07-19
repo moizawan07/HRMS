@@ -10,6 +10,9 @@ import { Route } from "react-router-dom";
 import DManageStaff from "@/pages/Authen/DManageStaff";
 import DCompanies from "@/pages/Authen/DCompanies/Index";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import DProjects from "@/pages/Authen/DProjects";
+import DOrganization from "@/pages/Authen/DOrganization";
+import DSalary from "@/pages/Authen/DSalary/Index";
 
 function AuthenRoutes() {
   return (
@@ -46,6 +49,21 @@ function AuthenRoutes() {
 
       <Route path="/dashboard/companies" element={
               <ProtectedRoute>    <DCompanies /> </ProtectedRoute>
+
+        } />
+
+      <Route path="/dashboard/projects" element={
+              <ProtectedRoute>    <DProjects /> </ProtectedRoute>
+
+        } />
+
+      <Route path="/dashboard/organization" element={
+              <ProtectedRoute>    <DOrganization /> </ProtectedRoute>
+
+        } />
+
+      <Route path="/dashboard/salary" element={
+              <ProtectedRoute>    <DSalary /> </ProtectedRoute>
 
         } />
 

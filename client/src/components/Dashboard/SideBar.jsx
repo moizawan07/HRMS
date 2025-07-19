@@ -36,7 +36,7 @@ const navItems = [
   { name: "Leaves", icon: CalendarOff, href: "/leaves" },
   { name: "Projects", icon: FolderKanban, href: "/projects" },
   { name: "Organization", icon: Building, href: "/organization" },
-  { name: "Finance", icon: DollarSign, href: "/finance" },
+  { name: "Salary", icon: DollarSign, href: "/salary" },
   { name: "HR Documents", icon: FileText, href: "/hr-documents" },
   { name: "Profile", icon: UserCog, href: "/profile" },
   { name: "invite", icon: BadgePlus, href: "/invite" },
